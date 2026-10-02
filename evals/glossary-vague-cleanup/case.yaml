@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.1",
+  "name": "glossary-vague-cleanup",
+  "tags": [
+    "smoke"
+  ],
+  "runs": 1,
+  "execution": {
+    "prompt": "Please clean up my AI Glot en-US-fr glossary. I am not sure which terms should be removed; inspect it and explain what you need from me.",
+    "max_turns": 14,
+    "timeout_seconds": 180,
+    "allowed_tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Skill"
+    ]
+  },
+  "graders": [
+    {
+      "name": "skill-loaded",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "aiglot-manage-glossary"
+    },
+    {
+      "name": "no-deletion",
+      "type": "regex",
+      "target": "mock_calls",
+      "pattern": "(edit_glossary_terms|delete_glossary|approve_translation)",
+      "match": "not_contains"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "ai-glot",
+  "version": "0.1.0",
+  "description": "Translate structured files, localize repository resources and manage terminology through your AI Glot workspace.",
+  "author": {
+    "name": "AI Glot",
+    "url": "https://ai-glot.com"
+  },
+  "homepage": "https://ai-glot.com/docs",
+  "repository": "https://github.com/DuvInc/ai-glot-skills",
+  "license": "MIT",
+  "keywords": [
+    "translation",
+    "localization",
+    "i18n",
+    "documents"
+  ],
+  "displayName": "AI Glot",
+  "mcpServers": "./.mcp.json"
+}

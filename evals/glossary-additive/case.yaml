@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.1",
+  "name": "glossary-additive",
+  "tags": [
+    "smoke"
+  ],
+  "runs": 1,
+  "execution": {
+    "prompt": "In my AI Glot en-US-fr glossary, add the mapping AI Glot = AI Glot and leave every other term unchanged. This exact additive update is authorized.",
+    "max_turns": 14,
+    "timeout_seconds": 180,
+    "allowed_tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Skill"
+    ]
+  },
+  "graders": [
+    {
+      "name": "skill-loaded",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "aiglot-manage-glossary"
+    },
+    {
+      "name": "additive-only",
+      "type": "llm",
+      "focus": "mock_calls",
+      "criteria": "PASS only if the agent reads the existing glossary and applies the supplied mapping without replace_all=true, removal or deletion. FAIL if unrelated terms are changed, a translation is started, or the explicit additive authorization is ignored."
+    }
+  ]
+}

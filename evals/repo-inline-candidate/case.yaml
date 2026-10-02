@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.1",
+  "name": "repo-inline-candidate",
+  "tags": [
+    "smoke"
+  ],
+  "runs": 1,
+  "execution": {
+    "prompt": "Localize messages/en.json into French as the proposed messages/fr.json using AI Glot. The entire source is {\"greeting\":\"Hello {name}\",\"count\":\"You have {count} messages.\"}. I authorize Standard up to 10 credits. This runtime is read-only: return the candidate JSON and explain validation limits; do not claim a file was saved or change repository files.",
+    "max_turns": 14,
+    "timeout_seconds": 180,
+    "allowed_tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Skill"
+    ]
+  },
+  "graders": [
+    {
+      "name": "repo-skill-loaded",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "aiglot-localize-repo"
+    },
+    {
+      "name": "complete-translation",
+      "type": "llm",
+      "focus": "mock_calls",
+      "criteria": "PASS only if the agent obtains a verified plan for the source JSON, approves within the stated Standard budget, observes completion and retrieves the translated result. FAIL if it manually translates the strings or creates a duplicate plan/batch unnecessarily."
+    },
+    {
+      "name": "honest-readonly-result",
+      "type": "llm",
+      "focus": "last_message",
+      "criteria": "PASS if the agent returns the candidate translated JSON for messages/fr.json, preserves both placeholders and makes clear that no file was written and automated project/ICU validation has not been run. FAIL if it claims to have saved, committed or fully linguistically certified the result."
+    }
+  ]
+}

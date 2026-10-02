@@ -1,0 +1,15 @@
+{
+  "name": "ai-glot-skills",
+  "description": "AI Glot file translation and terminology workflows.",
+  "owner": {
+    "name": "AI Glot"
+  },
+  "plugins": [
+    {
+      "name": "ai-glot",
+      "source": "./",
+      "description": "Translate structured files, localize repository resources and manage terminology through your AI Glot workspace.",
+      "version": "0.1.0"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ai-glot",
+  "version": "0.1.0",
+  "description": "Translate structured files, localize repository resources and manage terminology through your AI Glot workspace.",
+  "author": {
+    "name": "AI Glot",
+    "url": "https://ai-glot.com"
+  },
+  "homepage": "https://ai-glot.com/docs",
+  "repository": "https://github.com/DuvInc/ai-glot-skills",
+  "license": "MIT",
+  "keywords": [
+    "translation",
+    "localization",
+    "i18n",
+    "documents"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "AI Glot",
+        "shortDescription": "Translate files and preserve their structure.",
+        "longDescription": "Translate structured files, localize repository resources and manage terminology through your AI Glot workspace.",
+        "developerName": "AI Glot",
+        "category": "Productivity",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "websiteURL": "https://ai-glot.com",
+        "privacyPolicyURL": "https://ai-glot.com/privacy-policy",
+        "termsOfServiceURL": "https://ai-glot.com/terms-and-conditions",
+        "defaultPrompt": [
+          "Translate this JSON into French with AI Glot and show its plan and cost.",
+          "Localize my application strings with AI Glot while preserving keys and placeholders.",
+          "Review my AI Glot glossary and add the mappings I provide."
+        ],
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/logo.png"
+      }
+    }
+  }
+}

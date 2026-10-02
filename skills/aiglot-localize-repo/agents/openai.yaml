@@ -1,0 +1,11 @@
+interface:
+  display_name: "Localize repository resources"
+  short_description: "Localize resources with validated keys and placeholders."
+  default_prompt: "Use $aiglot-localize-repo for this AI Glot workflow."
+dependencies:
+  tools:
+    - type: mcp
+      value: aiglot
+      description: "AI Glot workspace translation and terminology tools"
+      transport: streamable_http
+      url: "https://mcp.ai-glot.com/mcp"
