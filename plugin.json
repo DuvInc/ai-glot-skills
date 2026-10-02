@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ai-glot",
-  "version": "0.1.0",
-  "description": "Translate structured files, localize repository resources and manage terminology through your AI Glot workspace.",
+  "version": "0.2.0",
+  "description": "Set up your AI Glot workspace, check credits, translate files, run multilingual campaigns, localize repository resources and manage terminology.",
   "author": {
     "name": "AI Glot",
     "url": "https://ai-glot.com"
@@ -21,7 +21,7 @@
       "interface": {
         "displayName": "AI Glot",
         "shortDescription": "Translate files and preserve their structure.",
-        "longDescription": "Translate structured files, localize repository resources and manage terminology through your AI Glot workspace.",
+        "longDescription": "Set up your AI Glot workspace, check credits, translate files, run multilingual campaigns, localize repository resources and manage terminology.",
         "developerName": "AI Glot",
         "category": "Productivity",
         "capabilities": [
@@ -32,6 +32,8 @@
         "privacyPolicyURL": "https://ai-glot.com/privacy-policy",
         "termsOfServiceURL": "https://ai-glot.com/terms-and-conditions",
         "defaultPrompt": [
+          "Check my AI Glot workspace, credits and usage without starting a translation.",
+          "Translate this document into three separate language versions within a combined budget.",
           "Translate this JSON into French with AI Glot and show its plan and cost.",
           "Localize my application strings with AI Glot while preserving keys and placeholders.",
           "Review my AI Glot glossary and add the mappings I provide."

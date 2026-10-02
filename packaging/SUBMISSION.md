@@ -7,7 +7,7 @@ A built package is not an approved marketplace listing.
 
 Upload the portable ai-glot-openai ZIP through the Plugins portal, with the
 remote MCP integration included from the start. It contains plugin.json,
-mcp.json, three skills and existing AI Glot branding. It has no app-ID reference
+mcp.json, five skills and existing AI Glot branding. It has no app-ID reference
 or hooks, which are currently excluded from public ZIP submission.
 
 Complete publisher verification, OAuth connection setup, domain challenge and

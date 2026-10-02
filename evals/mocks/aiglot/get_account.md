@@ -27,5 +27,16 @@ type: fixed
       "json",
       "xlsx"
     ]
+  },
+  "credential": {
+    "kind": "oauth",
+    "scopes": [
+      "account:read",
+      "batches:read",
+      "batches:create",
+      "batches:write",
+      "glossaries:read",
+      "glossaries:write"
+    ]
   }
 }

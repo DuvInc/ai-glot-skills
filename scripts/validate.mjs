@@ -47,7 +47,7 @@ export function validateRepository(root=ROOT){
   if(typeof front.description!=="string"||!front.description.trim()||front.description.length>1024) throw new Error("Invalid description "+name);
   if(front["allowed-tools"]) throw new Error("No permission pre-approvals in public skills");
   if(text.split("\n").length>500) throw new Error("Skill instructions must stay concise");
-  if(readFileSync(resolve(dir,"references/connection.md"),"utf8")!==readFileSync(resolve(root,"shared/connection.md"),"utf8")) throw new Error("Shared reference drift "+name);
+  for(const file of ["connection.md","methods.md","guidelines.md","formats.md"]) if(readFileSync(resolve(dir,"references",file),"utf8")!==readFileSync(resolve(root,"shared",file),"utf8")) throw new Error("Shared reference drift "+name+"/"+file);
   for(const file of walk(dir)){
    const full=resolve(dir,file);
    if(/\.(md|yaml|json|mjs)$/.test(file)){

@@ -9,25 +9,27 @@ skill does not connect an account or grant file access.
 
 | Skill | Outcome |
 | --- | --- |
+| `aiglot-manage-workspace` | Connect and diagnose access; inspect workspace, entitlements, credits and usage. |
+| `aiglot-run-translations` | Coordinate multilingual/bulk campaigns, combined budgets, parallel jobs and recovery. |
 | `aiglot-translate-file` | Upload a file, inspect the priced plan, authorize it and recover the result. |
 | `aiglot-localize-repo` | Translate repository resources, preserve keys and placeholders, validate and show a diff. |
 | `aiglot-manage-glossary` | Read and update terminology without an accidental full replacement. |
 
 ## Install
 
-This is the `v0.1.0-rc.1` release candidate. Stable installation from `main`
+This is the `v0.2.0-rc.1` release candidate. Stable installation from `main`
 will be available after the candidate is merged.
 
 Install a selected skill in a compatible coding agent:
 
 ```sh
-npx skills add https://github.com/DuvInc/ai-glot-skills/tree/v0.1.0-rc.1 --skill aiglot-localize-repo --agent codex
+npx skills add https://github.com/DuvInc/ai-glot-skills/tree/v0.2.0-rc.1 --skill aiglot-localize-repo --agent codex
 ```
 
 For Claude Code, clone the candidate and add its local marketplace:
 
 ```sh
-git clone --branch v0.1.0-rc.1 --depth 1 https://github.com/DuvInc/ai-glot-skills.git
+git clone --branch v0.2.0-rc.1 --depth 1 https://github.com/DuvInc/ai-glot-skills.git
 ```
 
 ```text
@@ -39,6 +41,18 @@ You can also download individual skill ZIPs or the Claude/OpenAI plugin ZIPs
 from Releases. Only call a surface supported after checking [COMPATIBILITY.md](COMPATIBILITY.md).
 Source installation and plugin installation are alternatives; installing both
 can present the same workflow twice.
+
+## Which method to use
+
+Prefer the CLI for local files, repository work and scripts: it handles binary
+upload, OAuth browser/device login, profiles and structured output. Use connected
+MCP for assistant workflows without a terminal; use REST for applications and
+existing HTTP automations. Reuse an already working authorized client.
+
+Every skill includes self-contained method and paid-guideline references.
+For separate document versions in several languages, run one batch per target
+from the same source, verify the combined quoted cost before approvals, and
+use bounded parallelism. Named multilingual columns may fit one verified plan.
 
 ## Connect your own workspace
 
@@ -62,6 +76,8 @@ paste an API key into a conversation or copy someone else's workspace credential
 
 ## Example requests
 
+- "Check my AI Glot workspace, credits, expiring grants and permissions without starting a translation."
+- "Translate this report into French, German and Spanish as separate documents, with a total budget of 500 credits."
 - "Translate this JSON into French. Keep its keys and {count} placeholders, and show the plan and price before starting."
 - "Localize messages/en.json into German, write messages/de.json, and show the validated diff."
 - "Add AI Glot as a protected term to my English-to-French glossary. Preserve every other term."

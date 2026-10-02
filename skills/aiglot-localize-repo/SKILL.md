@@ -2,7 +2,7 @@
 name: aiglot-localize-repo
 description: Localize repository JSON resources, application strings or documentation through AI Glot, preserve source keys and placeholders, write validated target files and show a reviewable diff. Use when an agent has repository files and must produce complete locale resources without translating them by hand.
 license: MIT
-compatibility: Repository read/write access, authenticated AI Glot MCP or CLI, and the project's validation tools. The bundled JSON checker needs Node.js 20 or later.
+compatibility: Repository read/write access, authenticated AI Glot CLI, MCP or REST, and the project's validation tools. The bundled JSON checker needs Node.js 20 or later.
 ---
 
 # Localize repository resources
@@ -13,7 +13,13 @@ tools extract, assemble and validate content.
 Read [connection guidance](references/connection.md) if setup or scopes need
 attention, and [repository checks](references/repository.md) before extraction
 or write-back. If MCP cannot transfer local bytes, use the CLI's local create
-command with the same scope/cost review.
+command with the same scope/cost review. Read [method selection](references/methods.md)
+for client recommendations and [custom guidelines](references/guidelines.md) for
+paid style/context guidance. Prefer CLI for repository automation; preserve a
+working authorized pipeline regardless of its client.
+
+Read [format preparation](references/formats.md) for file-family scope,
+known input limits and appropriate output checks.
 
 1. Read repository instructions and the existing localization pipeline. Locate
    the English/source files, actual target locales, output paths and existing
@@ -31,10 +37,16 @@ command with the same scope/cost review.
    imports, MDX component/attribute names, code and link targets, while including
    headings, body text, alt text and human-readable attributes. Use the project's
    extractor when source code mixes executable syntax with prose.
-5. Check account/quality entitlements. Create and review an AI Glot plan for the
+5. Successfully check the intended account/scopes and quality entitlements
+   before writes; stop on auth failure. Create and review an AI Glot plan for the
    selected payload, all targets and preserved content. File scope belongs in
    the plan; content-visible placeholder/markup rules belong in approval
-   custom_instructions. Inspect plan.not_included and plan.credits[quality].
+   custom_instructions only when entitlements.custom_guidelines is true.
+   Inspect plan.not_included and plan.credits[quality]. For several locales,
+   prepare all plans and sum their measured costs before any approvals.
+   Default to independent source-to-locale batches with bounded parallelism
+   (two active jobs), never chained translations or a per-locale reading of
+   the total budget. Preserve every ID for partial-failure recovery.
 6. Start only if the current plan, cost and destination are within user
    authorization. Existing standing permission is sufficient when it covers
    them. Otherwise present the measured decision. Keep one batch ID for this

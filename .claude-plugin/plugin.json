@@ -1,7 +1,7 @@
 {
   "name": "ai-glot",
-  "version": "0.1.0",
-  "description": "Translate structured files, localize repository resources and manage terminology through your AI Glot workspace.",
+  "version": "0.2.0",
+  "description": "Set up your AI Glot workspace, check credits, translate files, run multilingual campaigns, localize repository resources and manage terminology.",
   "author": {
     "name": "AI Glot",
     "url": "https://ai-glot.com"

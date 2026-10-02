@@ -2,20 +2,25 @@
 name: aiglot-manage-glossary
 description: Inspect or update an AI Glot workspace glossary for an explicit language pair, add preferred or protected terms, and preserve unrelated mappings. Use for glossary and terminology requests; require a precise intended deletion or replacement before removing terms.
 license: MIT
-compatibility: Authenticated AI Glot MCP or CLI with glossary scopes. Translation is a separate workflow and is not started by this skill.
+compatibility: Authenticated AI Glot CLI, MCP or REST with glossary scopes. Translation is a separate workflow and is not started by this skill.
 ---
 
 # Manage workspace terminology
 
 Read [connection guidance](references/connection.md) for access and
 [glossary operations](references/operations.md) for command details.
+Read [method selection](references/methods.md) for CLI/MCP/REST equivalents.
+Prefer the connected client; CLI is convenient for importing term-map files.
+For one-run wording guidance rather than lasting workspace terminology, read
+[paid custom guidelines](references/guidelines.md).
 
 1. Identify the requested language pair and intended operation. Use the actual
    catalog tags from the language resource, CLI languages or public languages
    endpoint when available. Do not guess a regional language tag or create an
    arbitrary pair. If an ambiguity changes the mapping, ask the smallest
    necessary question.
-2. Check account glossary limits and tool scopes. Read list_glossaries and
+2. Successfully check the intended account, glossary limits and scopes before
+   writes. Stop on authentication failure. Read list_glossaries and
    get_glossary as needed before modifying an existing glossary. Resolve a
    permission/connection problem; do not use another workspace or credential.
 3. Build the smallest explicit source-to-target map. A protected product term
@@ -33,5 +38,7 @@ Read [connection guidance](references/connection.md) for access and
 6. Respect pair and term caps. A cap refusal does not authorize deleting older
    terms or splitting across invented pairs to bypass the entitlement.
 7. Read the result back and report added/updated/removed mappings and any
-   discrepancy. Do not start a translation, change billing or archive history
+   discrepancy. Prepare requested glossary updates before planning/approving
+   translations; do not promise edits affect a run already in progress.
+   Do not start a translation, change billing or archive history
    as a side effect of glossary maintenance.

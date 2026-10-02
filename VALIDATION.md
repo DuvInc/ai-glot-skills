@@ -1,23 +1,28 @@
 # Candidate validation
 
-Version: 0.1.0, candidate tag v0.1.0-rc.1. Verified on 2026-10-02.
+Version: 0.2.0, candidate tag v0.2.0-rc.1. Verified on 2026-10-02.
 
 ## Automated checks
 
-- 19 Node tests passed, covering JSON structure, simple placeholders, official manifest schemas, package boundaries, file digests and reproducible archives.
-- Native Claude Code 2.1.204 strict plugin validation passed.
-- 11 behavioral cases passed with Claude Code 2.1.287's evaluator: attachment unavailable, authorized file, budget refusal, glossary additive update, vague glossary cleanup, missing language, missing repository target, unrelated writing, inline repository candidate, excluded scope and account connection failure.
-- Each behavioral case has one passing run. These are bounded regression checks, not a universal reliability guarantee.
-- A real AI Glot translation of synthetic JSON completed using 2 Lite credits. Downloaded output preserved structure and simple placeholders. This does not certify every language, file format or translation quality.
+- 19 Node tests cover JSON structure, simple placeholders, official manifest schemas, archive boundaries, all shared references, file digests and reproducible archives.
+- Native Claude Code 2.1.204 strict validation checks the marketplace and plugin manifests.
+- 18 behavioral cases passed after the documented fixture/grader corrections. Cases cover all five skills: file availability, authorized execution, insufficient budget, connection failure, excluded scope, paid/free guideline entitlement, repository scope, additive glossary updates with contradictory read-back, workspace diagnostics, app-only administration, campaign output design, combined multilingual budget and cancelled-job recovery.
+- Each reported behavioral case has one passing run; narrow reruns supersede the initial failed harness runs. These are bounded regression checks, not a universal reliability guarantee.
 
-The connection-failure case initially revealed a write attempt after a failed account check. The shared instructions and file workflow now require a successful account preflight before any write; the case passed after that fix.
+Initial expanded-suite failures exposed incomplete fixtures and grader focus: credit reads were intentionally unsupported, a CSV plan included JSON preview content, explanatory responses were graded only from tool calls, and a fixed glossary read never reflected its successful write. Fixtures and graders now separate decision text, exact write arguments, no-spend checks and honest read-back uncertainty. The glossary case is deliberately a stale-read recovery scenario; it is not a happy-path persistence proof.
+
+## Real service evidence
+
+The preceding 0.1.0 candidate completed a synthetic JSON translation at 2 Lite credits and validated its downloaded structure/placeholders. It remains transport evidence, not proof of every 0.2.0 instruction or file format.
+
+For 0.2.0, two distinct real batches were prepared from the same synthetic JSON, into French and German. Both plans had no exclusions and quoted 2 Lite credits each, 4 combined. Neither was approved: zero translation credits spent. This verifies multilingual preparation and combined quotes, not actual parallel completion.
+
+Real plans can return readable names such as English/French while glossary/catalog operations use language tags. The client guidance now explicitly distinguishes them.
 
 ## Installation and host limits
 
-Public installation from the candidate tag with the documented Vercel skills command succeeded in an isolated temporary project for Codex. All five installed files matched the source bytes. The installed JSON helper validated the real translated synthetic fixture. No global agent configuration was changed.
+Public candidate installation is checked in an isolated temporary Codex project; the copied skill files must match source bytes. This installs instructions, not an account connection.
 
-The build produces self-contained individual skills and separate Claude/OpenAI plugin archives. Official portable schemas and native Claude manifest validation cover packaging.
+Direct ChatGPT portal, Claude Desktop/mobile and directory review are not complete. CLI validation and model scenarios do not certify those surfaces. The static catalog is a build artifact, not Skills over MCP runtime support.
 
-Direct ChatGPT portal, Claude Desktop/mobile and marketplace review have not been completed. Directory approval is separate from repository publication. The static skills catalog is not served by the production MCP server.
-
-Behavioral evaluation uses synthetic mocked tool responses. The live smoke test uses the real service. Neither includes customer documents or publishes account credentials.
+No customer documents, credentials, raw account identifiers or signed URLs are included in the public reports.

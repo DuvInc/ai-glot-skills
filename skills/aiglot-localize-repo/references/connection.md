@@ -7,6 +7,10 @@ existing authorization; do not demand another confirmation when the current
 plan, budget and destination are already covered. Server permissions and
 entitlements remain mandatory.
 
+For method recommendations and CLI/MCP/REST equivalence, read
+[method selection](methods.md). For wording context and the paid entitlement,
+read [custom guidelines](guidelines.md).
+
 ## MCP
 
 Connect https://mcp.ai-glot.com/mcp through the host's OAuth flow. Installing
@@ -28,7 +32,7 @@ workspace silently or widen scopes on the user's behalf.
 ## CLI
 
 Use the official @ai-glot/cli package. Tested minimum is 0.3.0; the verified
-published version for this release is 0.3.4. Run aiglot help --json or command
+published version for this release is 0.3.4. PDF requires 0.3.4 or later. Run aiglot help --json or command
 --help before using an unfamiliar option.
 
 For translation OAuth login:
@@ -45,6 +49,15 @@ print, bundle or transmit their value.
 Use --json for machine-readable output. Create/get outputs are the batch at
 the top level, not under data. Preserve stderr on failure and report the real
 error. Do not hide an error behind a JSON parsing fallback.
+
+## REST API
+
+The public base is https://api.ai-glot.com/v1. Use an existing authenticated
+client and the current OpenAPI contract, or the CLI raw api command with its
+stored credential. JSON HTTP responses have a data envelope; CLI single-object
+responses are unwrapped. Direct REST binary upload is multipart/form-data.
+Read account before writes and check the same scopes and entitlements as MCP.
+OAuth/API-key handling belongs to the client, not a skill.
 
 ## Runtime capability is separate from account access
 

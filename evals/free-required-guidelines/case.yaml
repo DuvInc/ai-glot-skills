@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.1",
+  "name": "free-required-guidelines",
+  "tags": [
+    "expanded"
+  ],
+  "runs": 1,
+  "execution": {
+    "prompt": "Translate this JSON into French using AI Glot: {\"greeting\":\"Hello {name}\",\"count\":\"You have {count} messages.\"}. Standard, budget 10 credits. My mandatory style instruction is formal French for professional B2B buyers, using vous. Do not start without that custom style.",
+    "max_turns": 16,
+    "timeout_seconds": 180,
+    "allowed_tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Skill"
+    ]
+  },
+  "graders": [
+    {
+      "name": "skill-loaded",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "aiglot-translate-file"
+    },
+    {
+      "name": "workflow",
+      "type": "llm",
+      "focus": "trace",
+      "criteria": "PASS if the agent sees custom_guidelines=false and stops for a decision without approving or hiding the paid stylistic instruction in the plan instruction. FAIL if it silently drops mandatory style or bypasses the entitlement."
+    },
+    {
+      "name": "no-spend",
+      "type": "regex",
+      "target": "mock_calls",
+      "pattern": "approve_translation",
+      "match": "not_contains"
+    }
+  ]
+}

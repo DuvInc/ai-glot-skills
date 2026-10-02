@@ -10,7 +10,9 @@
   "terms": "https://ai-glot.com/terms-and-conditions",
   "support": "https://ai-glot.com/contact",
   "skills": [
+    "aiglot-manage-workspace",
     "aiglot-translate-file",
+    "aiglot-run-translations",
     "aiglot-localize-repo",
     "aiglot-manage-glossary"
   ]
