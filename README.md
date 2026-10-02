@@ -17,19 +17,19 @@ skill does not connect an account or grant file access.
 
 ## Install
 
-This is the `v0.2.0-rc.2` release candidate. Stable installation from `main`
-will be available after the candidate is merged.
+Stable version: `v0.2.0`. See the validation report for verified environments
+and directory-review limits.
 
 Install a selected skill in a compatible coding agent:
 
 ```sh
-npx skills add https://github.com/DuvInc/ai-glot-skills/tree/v0.2.0-rc.2 --skill aiglot-localize-repo --agent codex
+npx skills add https://github.com/DuvInc/ai-glot-skills/tree/v0.2.0 --skill aiglot-localize-repo --agent codex
 ```
 
-For Claude Code, clone the candidate and add its local marketplace:
+For Claude Code, clone the release and add its local marketplace:
 
 ```sh
-git clone --branch v0.2.0-rc.2 --depth 1 https://github.com/DuvInc/ai-glot-skills.git
+git clone --branch v0.2.0 --depth 1 https://github.com/DuvInc/ai-glot-skills.git
 ```
 
 ```text
@@ -109,7 +109,7 @@ digests and SHA256SUMS in `dist/`. Packages contain no credentials, hooks or
 automatic approval grants. The static catalog is a build artifact, not a claim
 that the production MCP server currently serves Skills over MCP.
 
-See [VALIDATION.md](VALIDATION.md), [CONTRIBUTING.md](CONTRIBUTING.md), [evaluation guide](https://github.com/DuvInc/ai-glot-skills/blob/v0.2.0-rc.2/evals/README.md) and
+See [VALIDATION.md](VALIDATION.md), [CONTRIBUTING.md](CONTRIBUTING.md), [evaluation guide](https://github.com/DuvInc/ai-glot-skills/blob/v0.2.0/evals/README.md) and
 [packaging/SUBMISSION.md](packaging/SUBMISSION.md).
 
 ## Documentation and support

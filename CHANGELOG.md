@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.0
+
+- Publish the five validated skills and host packages as the first stable release.
+- Directory approval and direct ChatGPT/Claude Desktop tests remain separate.
+
 ## 0.2.0 candidate 2
 
 - Include linked usage/review guides in plugin ZIPs and check every local Markdown link in archives.
