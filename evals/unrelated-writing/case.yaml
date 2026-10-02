@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.1",
+  "name": "unrelated-writing",
+  "tags": [
+    "smoke"
+  ],
+  "runs": 1,
+  "execution": {
+    "prompt": "Write a short haiku about the ocean. Do not use external services.",
+    "max_turns": 14,
+    "timeout_seconds": 180,
+    "allowed_tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Skill"
+    ]
+  },
+  "graders": [
+    {
+      "name": "no-unrelated-skill",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "aiglot-",
+      "min": 0,
+      "max": 0
+    },
+    {
+      "name": "no-service",
+      "type": "regex",
+      "target": "mock_calls",
+      "pattern": "[\\\\s\\\\S]+",
+      "match": "not_contains"
+    }
+  ]
+}

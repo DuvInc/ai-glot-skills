@@ -1,0 +1,624 @@
+{
+  "tools": [
+    {
+      "name": "get_account",
+      "title": "Get account",
+      "description": "Read the AI Glot workspace this connection belongs to: its plan, credit balance, and limits. Costs nothing and changes nothing. Call this first if you need to know what the workspace is allowed to do: `capabilities.batch_creation` confirms this workspace may start translations (create_translation, plan_translation, approve_translation), `entitlements.max_upload_bytes_by_format` gives the size ceiling per format, and `capabilities.supported_formats` lists what can be translated at all.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {}
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "_meta": {
+        "ttlMs": 30000,
+        "cacheScope": "private"
+      }
+    },
+    {
+      "name": "get_credit_balance",
+      "title": "Get credit balance",
+      "description": "Read the workspace's current credit balance and every credit grant with its remaining amount and expiry date. Costs nothing and changes nothing. `next_refill_estimated_at` is an estimate derived from grant expiry, not a guaranteed date.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {}
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "_meta": {
+        "ttlMs": 30000,
+        "cacheScope": "private"
+      }
+    },
+    {
+      "name": "get_usage",
+      "title": "Get usage over time",
+      "description": "Read how many credits the workspace spent and how many translations it completed over a period, bucketed by day, week or month. Costs nothing and changes nothing. Omit the dates for the last 30 days.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "from": {
+            "description": "Start of the range: '2026-07-01' or a full ISO 8601 timestamp. Defaults to 30 days ago.",
+            "type": "string"
+          },
+          "to": {
+            "description": "End of the range, inclusive: '2026-07-01' or a full ISO 8601 timestamp. A date-only value means the end of that day. Defaults to now.",
+            "type": "string"
+          },
+          "granularity": {
+            "description": "Bucket size. Chosen from the range length when omitted.",
+            "type": "string",
+            "enum": [
+              "day",
+              "week",
+              "month"
+            ]
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "_meta": {
+        "ttlMs": 30000,
+        "cacheScope": "private"
+      }
+    },
+    {
+      "name": "send_feedback",
+      "title": "Send feedback about using AI Glot",
+      "description": "Use this tool while using AI Glot when an AI Glot tool, response, error or workflow behaves differently from what you expected, or when you wish something worked differently. Call it once the issue is clear. Describe the situation, what you observed and what should have happened. If known, include the related tool, API operation or CLI command, the AI model and the agent harness. Do not include API keys, tokens, signed URLs or full file contents. This tool only records feedback, does not retry or change your translation, and costs no credits.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "observed_problem": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000,
+            "description": "What went wrong, was confusing, or should work differently."
+          },
+          "situation": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000,
+            "description": "What you were trying to do and what happened around the problem."
+          },
+          "expected_solution": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000,
+            "description": "What you expected AI Glot to do, or how you would improve it."
+          },
+          "related_action": {
+            "description": "The MCP tool, API operation, or CLI command involved, if known.",
+            "type": "string",
+            "maxLength": 200
+          },
+          "ai_model": {
+            "description": "The AI model used, if known. Do not guess.",
+            "type": "string",
+            "maxLength": 200
+          },
+          "agent_harness": {
+            "description": "The agent client or harness used, if known, such as Claude Desktop or Cursor.",
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "observed_problem",
+          "situation",
+          "expected_solution"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "list_batches",
+      "title": "List translations",
+      "description": "List the workspace's translations across all supported file formats, most recent first. Costs nothing and changes nothing. Archived translations are excluded unless you ask for them. Use the returned `next_cursor` to fetch the following page. Pass `search` to find translations by name (or, for translations you never renamed, by their uploaded file name) instead of paging through everything.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "limit": {
+            "description": "How many to return (default 25, max 100 \u2014 a larger value is clamped, not refused).",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "description": "Pass `next_cursor` from a previous call, unchanged.",
+            "type": "string"
+          },
+          "status": {
+            "description": "Only translations in this state.",
+            "type": "string",
+            "enum": [
+              "analyzing",
+              "awaiting_instructions",
+              "awaiting_approval",
+              "translating",
+              "completed",
+              "failed",
+              "cancelled"
+            ]
+          },
+          "archived": {
+            "description": "Set true to list archived translations instead.",
+            "type": "string",
+            "enum": [
+              "0",
+              "1",
+              "true",
+              "false"
+            ]
+          },
+          "quality_tier": {
+            "description": "Only translations run at this quality tier.",
+            "type": "string",
+            "enum": [
+              "standard",
+              "lite"
+            ]
+          },
+          "created_after": {
+            "description": "Only translations created at or after this date or timestamp.",
+            "type": "string"
+          },
+          "created_before": {
+            "description": "Only translations created at or before this date or timestamp.",
+            "type": "string"
+          },
+          "search": {
+            "description": "Find translations by name (or, for translations never renamed, by uploaded file name). Composes with the other filters.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "_meta": {
+        "ttlMs": 30000,
+        "cacheScope": "private"
+      }
+    },
+    {
+      "name": "get_batch",
+      "title": "Get one translation",
+      "description": "Read the full state of a single translation, including its progress and any error. Costs nothing and changes nothing. `status` says what to do next: `analyzing` needs polling, `awaiting_instructions` needs plan_translation, `awaiting_approval` needs approve_translation, `translating` needs polling, `completed` needs get_batch_result_link. `failed` and `cancelled` are terminal: stop polling, and read `error` to tell them apart.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "batch_id": {
+            "type": "string",
+            "description": "The translation's id, as returned by list_batches."
+          }
+        },
+        "required": [
+          "batch_id"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "get_batch_result_link",
+      "title": "Get a download link or content for a finished translation",
+      "description": "Retrieve a completed translation's result. By default (format='link') returns a temporary signed link (valid 30 minutes) to download the file directly from storage. For text formats (CSV, JSON, YAML, etc. under 2 MB), pass format='content' to receive the translated text directly in the response. Costs nothing and changes nothing. Only works once the translation is 'completed'.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "batch_id": {
+            "type": "string",
+            "description": "The translation's id."
+          },
+          "format": {
+            "description": "Defaults to 'link'. Use 'content' to receive inline text payload for text files under 2 MB.",
+            "type": "string",
+            "enum": [
+              "link",
+              "content"
+            ]
+          }
+        },
+        "required": [
+          "batch_id"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "update_batch",
+      "title": "Rename or archive a translation",
+      "description": "Change a translation's name, or archive/unarchive it. Costs no credits. Nothing about the translated content changes \u2014 this is housekeeping only, and archiving is reversible.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "batch_id": {
+            "type": "string",
+            "description": "The translation's id."
+          },
+          "name": {
+            "description": "New name, or null to clear it.",
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "archived": {
+            "description": "True to archive, false to restore.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "batch_id"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "create_upload_url",
+      "title": "Prepare a local file upload",
+      "description": "Create a temporary upload URL and upload-only headers for a local document. Costs no credits and does not start a translation. Requires batches:create. Requires access to the local file bytes and an HTTP client that can make a raw PUT request outside MCP with the returned URL and headers. MCP alone and AI Glot Code Mode cannot transfer the file. Send bytes, not JSON, base64 or multipart. Never forward your workspace API key or OAuth token, follow redirects, log the Authorization header, or show the temporary secret to the user. After a successful PUT, call create_translation with upload_id on this same AI Glot connection, then review the plan before approving. If your runtime cannot read the file or make HTTP PUT calls, tell the user: 'This assistant can connect to AI Glot, but cannot send this local attachment. Upload the document in the AI Glot web app, use the AI Glot CLI, or provide an HTTPS download link that AI Glot can fetch.' Do not claim the file was uploaded or spend credits. If a PUT fails or its response is lost, try create_translation with upload_id first; if no complete upload exists, request a new upload session. Never retry PUT to replace a file.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "filename": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[^\\/]+$",
+            "description": "The local file's name including its supported extension."
+          },
+          "size_bytes": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991,
+            "description": "The exact byte length of the local file. Checked against the format cap and the received bytes."
+          }
+        },
+        "required": [
+          "filename",
+          "size_bytes"
+        ],
+        "additionalProperties": false,
+        "examples": [
+          {
+            "filename": "document.xlsx",
+            "size_bytes": 4096
+          }
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "create_translation",
+      "title": "Create a translation from a file",
+      "description": "Upload a file and (optionally) say how to translate it, in plain language. For a local binary file, call create_upload_url, send raw bytes by external HTTP PUT with its returned headers, then pass upload_id here on the same connection. The client must be able to read the bytes and make HTTP PUT calls; if it cannot, explain that limitation and direct the user to the AI Glot web app, CLI, or an HTTPS download link. Pass the file as `content` (the file itself, verbatim UTF-8 text, csv/tsv/json/yaml/toml/xliff/po/strings/stringsdict/xcstrings/properties/xml/resx/ts (Qt)/srt/vtt/sbv/ass/ttml/txt/md/html) or as `file_url` (public HTTPS, fetched server-side; available for binary formats like XLSX, ODS, DOCX, PPTX, ODT, ODP, EPUB, PDF and ZIP, which cannot be inlined). With `instruction`, the response includes the full verified plan (takes some seconds): measured segment/word counts, credit cost, a 10-item preview of real extractions, and `plan.not_included`, check that list, it names anything the instruction asked for that will NOT happen. Without `instruction`, the batch comes back as `awaiting_instructions` with `suggested_instructions` to pick from, and the next step is plan_translation, approve_translation is refused until a plan exists. Nothing is charged until approve_translation. The upload also appears in the AI Glot web app.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "upload_id": {
+            "description": "Completed upload from create_upload_url on this same connection. Exactly one of content, file_url and upload_id is required.",
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "file_url": {
+            "description": "HTTPS download URL fetched server-side without redirects.",
+            "type": "string",
+            "maxLength": 2000,
+            "format": "uri"
+          },
+          "content": {
+            "description": "The file itself as verbatim UTF-8 text, for text formats only.",
+            "type": "string",
+            "minLength": 1
+          },
+          "filename": {
+            "description": "The file's supported name and extension. Omit with upload_id; otherwise optional.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[^\\/]+$"
+          },
+          "instruction": {
+            "description": "How to translate, in plain language.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "plan_translation",
+      "title": "Prepare or refine the translation plan",
+      "description": "The natural-language back and forth before anything is charged. Pass `instruction` to (re)plan from scratch, or `refinement` to adjust the current plan ('actually, only translate rows where the source has a question mark'). Returns the rebuilt plan: what will and will not be translated, measured counts, credit cost, and a preview of real extractions. Always check `plan.not_included` before approving \u2014 a non-empty list means part of the ask will NOT happen. Repeat as often as needed; planning is free. Afterwards the batch is `awaiting_approval`, which is the only state approve_translation accepts.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "batch_id": {
+            "type": "string",
+            "description": "The translation's id."
+          },
+          "instruction": {
+            "description": "A fresh instruction \u2014 replaces and replans.",
+            "type": "string",
+            "maxLength": 2000
+          },
+          "refinement": {
+            "description": "An adjustment to the current plan.",
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "batch_id"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "approve_translation",
+      "title": "Approve the plan and start translating (spends credits)",
+      "description": "Requires the batch to be `awaiting_approval`. If it is `awaiting_instructions` this is refused with `no_plan_yet`, and the fix is to call plan_translation first. Only call when the user has authorized the current plan, its exclusions and its measured cost; reuse explicit standing authorization when it covers this plan and budget. Starts the translation the current plan describes and reserves its credits (standard: 1 word = 1 credit; lite: a third, rounded up, cheaper and faster, slightly simpler output). Returns `credits_charged` plus initial progress with `estimated_seconds_remaining`. From here, poll get_batch; when its `next_action` is 'download', fetch the result with get_batch_result_link.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "batch_id": {
+            "type": "string",
+            "description": "The translation's id."
+          },
+          "quality": {
+            "description": "Defaults to standard.",
+            "type": "string",
+            "enum": [
+              "standard",
+              "lite"
+            ]
+          },
+          "custom_instructions": {
+            "description": "Standing guidelines (tone, protected terms) applied on top of the plan.",
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "batch_id"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "cancel_translation",
+      "title": "Cancel a running translation",
+      "description": "Stops a running translation within moments. Work already completed is charged (`credits_charged` in the response \u2014 translation that ran has a real cost); the rest of the reservation is released. The batch ends with status 'cancelled', which is terminal and distinct from 'failed': nothing went wrong, it was stopped on purpose. This cannot be undone; a new run needs a new approval.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "batch_id": {
+            "type": "string",
+            "description": "The translation's id."
+          }
+        },
+        "required": [
+          "batch_id"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "list_glossaries",
+      "title": "List glossaries",
+      "description": "List the workspace's glossaries \u2014 one per language pair, alphabetically \u2014 with how many terms each holds and the plan's maximum. Costs nothing and changes nothing. Terms are omitted by default (get_glossary returns one glossary's terms); pass expand: ['terms'] to get full term content for several glossaries in one call instead of calling get_glossary once per pair \u2014 this clamps the page to 10 glossaries, since term content is otherwise unbounded in size. Use the returned `next_cursor` to fetch the following page.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "limit": {
+            "description": "How many to return (default 25, max 100 \u2014 or 10 while expanding terms).",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "cursor": {
+            "description": "Pass `next_cursor` from a previous call, unchanged.",
+            "type": "string"
+          },
+          "expand": {
+            "description": "Pass ['terms'] to include each glossary's full terms in the page.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "const": "terms"
+            }
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "_meta": {
+        "ttlMs": 30000,
+        "cacheScope": "private"
+      }
+    },
+    {
+      "name": "get_glossary",
+      "title": "Get a glossary and its terms",
+      "description": "Read every term in one glossary. Costs nothing and changes nothing. The language pair is two tags joined by a hyphen, for example 'en-US-fr'; read the aiglot://languages resource for the supported tags.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "language_pair": {
+            "type": "string",
+            "description": "Language pair, e.g. 'en-US-fr'."
+          }
+        },
+        "required": [
+          "language_pair"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "edit_glossary_terms",
+      "title": "Add, change or remove glossary terms",
+      "description": "Add or update terms in a glossary, and optionally remove some. Creates the glossary if it does not exist yet. Costs no credits.\n\nBy default this is additive: terms you do not mention are left alone. Set replace_all to true only if you intend to DELETE every term not listed in `terms` \u2014 that cannot be undone.\n\nThe plan limits how many terms a glossary may hold; if the result would exceed it the whole change is rejected and nothing is modified.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "language_pair": {
+            "type": "string",
+            "description": "Language pair, e.g. 'en-US-fr'. Created if it does not exist."
+          },
+          "terms": {
+            "description": "Terms to add or update, as { \"source term\": \"preferred translation\" }.",
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "remove": {
+            "description": "Source terms to delete from the glossary.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "replace_all": {
+            "description": "DESTRUCTIVE. True deletes every term not present in `terms`. Default false.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "language_pair"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "delete_glossary",
+      "title": "Delete a glossary",
+      "description": "Permanently delete a glossary and every term in it. THIS CANNOT BE UNDONE and the terms cannot be recovered. Costs no credits. If you only want to remove some terms, use edit_glossary_terms with `remove` instead.",
+      "inputSchema": {
+        "type": "object",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "language_pair": {
+            "type": "string",
+            "description": "Language pair to delete, e.g. 'en-US-fr'."
+          }
+        },
+        "required": [
+          "language_pair"
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": false
+      }
+    }
+  ]
+}

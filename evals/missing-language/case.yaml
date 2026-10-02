@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.1",
+  "name": "missing-language",
+  "tags": [
+    "smoke"
+  ],
+  "runs": 1,
+  "execution": {
+    "prompt": "Translate this JSON using AI Glot: {\"greeting\":\"Hello {name}\"}. I have not selected a target language yet.",
+    "max_turns": 14,
+    "timeout_seconds": 180,
+    "allowed_tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Skill"
+    ]
+  },
+  "graders": [
+    {
+      "name": "no-guessed-create",
+      "type": "regex",
+      "target": "mock_calls",
+      "pattern": "(create_translation|approve_translation)",
+      "match": "not_contains"
+    },
+    {
+      "name": "question",
+      "type": "regex",
+      "target": "last_message",
+      "pattern": "(language|locale)",
+      "flags": "i"
+    }
+  ]
+}

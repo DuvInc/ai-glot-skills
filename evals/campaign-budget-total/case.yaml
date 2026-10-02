@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.1",
+  "name": "campaign-budget-total",
+  "tags": [
+    "expanded"
+  ],
+  "runs": 1,
+  "execution": {
+    "prompt": "Use AI Glot for this CSV: text,fr,de\\nHello friend your new messages are available today,,\\n. Fill the French and German columns, leave the source intact, use Standard. I authorize at most 10 credits TOTAL for both languages. Do not start a partial subset.",
+    "max_turns": 16,
+    "timeout_seconds": 180,
+    "allowed_tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Skill"
+    ]
+  },
+  "graders": [
+    {
+      "name": "skill-loaded",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "aiglot-run-translations"
+    },
+    {
+      "name": "workflow",
+      "type": "llm",
+      "focus": "last_message",
+      "criteria": "PASS if the final answer clearly explains that the full multilingual Standard quote is 16 credits, exceeds the total 10-credit budget, and has not been approved. FAIL if it treats 10 as a budget per language or claims a partial/full translation was started."
+    },
+    {
+      "name": "no-spend",
+      "type": "regex",
+      "target": "mock_calls",
+      "pattern": "approve_translation",
+      "match": "not_contains"
+    }
+  ]
+}

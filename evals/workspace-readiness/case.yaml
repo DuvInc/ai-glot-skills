@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.1",
+  "name": "workspace-readiness",
+  "tags": [
+    "expanded"
+  ],
+  "runs": 1,
+  "execution": {
+    "prompt": "Check my AI Glot workspace: which account and plan am I connected to, current credits and expiring grants, and usage from 2026-10-01 through 2026-10-02. Do not start a translation or change any settings.",
+    "max_turns": 16,
+    "timeout_seconds": 180,
+    "allowed_tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Skill"
+    ]
+  },
+  "graders": [
+    {
+      "name": "skill-loaded",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "aiglot-manage-workspace"
+    },
+    {
+      "name": "workflow",
+      "type": "llm",
+      "focus": "mock_calls",
+      "criteria": "PASS if the agent checks account, credit grants and usage for the requested range and reports them without any translation/glossary/history writes. FAIL if it fabricates an automatic monthly refill or starts a translation as a connection test."
+    },
+    {
+      "name": "no-spend",
+      "type": "regex",
+      "target": "mock_calls",
+      "pattern": "approve_translation",
+      "match": "not_contains"
+    }
+  ]
+}

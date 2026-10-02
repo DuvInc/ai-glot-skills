@@ -1,0 +1,19 @@
+{
+  "name": "ai-glot",
+  "displayName": "AI Glot",
+  "marketplace": "ai-glot-skills",
+  "endpoint": "https://mcp.ai-glot.com/mcp",
+  "repository": "https://github.com/DuvInc/ai-glot-skills",
+  "homepage": "https://ai-glot.com/docs",
+  "author": "AI Glot",
+  "privacy": "https://ai-glot.com/privacy-policy",
+  "terms": "https://ai-glot.com/terms-and-conditions",
+  "support": "https://ai-glot.com/contact",
+  "skills": [
+    "aiglot-manage-workspace",
+    "aiglot-translate-file",
+    "aiglot-run-translations",
+    "aiglot-localize-repo",
+    "aiglot-manage-glossary"
+  ]
+}
