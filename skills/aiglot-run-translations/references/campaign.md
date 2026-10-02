@@ -29,7 +29,7 @@ aiglot batches create ./report.docx --instruction "Translate all eligible Englis
 ```
 
 Save both returned IDs, inspect both full plans, confirm target/output shape and
-sum `plan.credits[quality]`. For example, Lite quotes of 4 and 5 credits cost
+sum `plan.credits[quality]`. For example, Standard quotes of 4 and 5 credits cost
 9 credits together. An 8-credit campaign ceiling is a refusal before approval,
 not permission to start the first job. No `--languages`, `--parallel` or bulk
 REST endpoint is assumed: the caller owns orchestration.
@@ -79,6 +79,29 @@ Do not blindly repeat create or approve. A refused approval may follow successfu
 approvals of other jobs; report those as active and stop new starts, do not claim
 the whole campaign was rolled back. Server reservations protect the balance,
 but do not enforce the user's combined campaign budget.
+
+## Budget on resume and retry
+
+Keep one commitment per job: its confirmed settled charge if complete, its
+current reservation if active, or its quote if not approved. A reservation that
+becomes a final charge replaces that commitment; it is not added a second time.
+
+For a 10-credit campaign ceiling, 7 credits already spent plus a 2-credit active
+reservation leaves 1 credit for new work. A pending 3-credit job must not launch,
+even if the workspace has 100 credits available. The total would be 12.
+Current workspace balance answers affordability; the campaign ledger answers
+the user's authorization.
+
+Do not compare the full historical total with the current balance on resume:
+already spent/reserved credits are not available anymore. Compare pending new
+approvals with current available balance, then separately check the full
+campaign commitments against its ceiling.
+
+Refunded failed jobs can release commitments only after refund is verified and
+the user's ceiling permits net accounting. Cancellation can leave a partial
+charge; cancelled/failed status alone does not provide a reusable budget figure.
+If the receipt/account evidence is incomplete, report uncertainty before retry.
+A replacement batch is a new commitment, never a free continuation by default.
 
 ## Existing work and history
 

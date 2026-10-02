@@ -35,9 +35,14 @@ known input limits and appropriate output checks.
    targets as blocked; never drop a language silently.
 5. Record each job's original source identity/hash, intended target/output,
    batch ID, verified plan, quality and measured plan.credits[quality].
-   Sum distinct planned jobs exactly once, using per-batch Lite rounding rather
-   than rounding a combined word total. Check the combined budget and balance
-   before starting any new jobs. Do not treat budget as a limit per language.
+   Sum distinct jobs exactly once, using per-batch Lite rounding rather than
+   rounding a combined word total. On resume count already charged work, active
+   reservations and new pending quotes against the campaign ceiling; a retry
+   does not reset it. Count verified refunds only according to the user's budget
+   policy; unresolved charges/reservations remain conservative commitments.
+   Compare only new pending approvals with current available credits, because
+   prior reservations are already reflected in the balance. Do not treat the
+   budget as a limit per language or double-count a reservation and its charge.
 6. Present the complete campaign when authorization is missing. Reuse standing
    authorization covering its targets, quality, exclusions and total ceiling.
    Do not start a cheap subset if the complete campaign exceeds the authorized

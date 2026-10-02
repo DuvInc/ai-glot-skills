@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.1",
+  "name": "campaign-resume-budget",
+  "tags": [
+    "candidate-2"
+  ],
+  "runs": 1,
+  "execution": {
+    "prompt": "Use the AI Glot campaign skill to review this confirmed ledger. Explain only, do not start or change any job. In my AI Glot campaign the total ceiling is 10 credits. I have already spent 7 credits on completed jobs, 2 credits are reserved for one active job, and the next pending job is quoted at 3 credits. My workspace has 100 credits currently available. Can I launch it, and how should a script account for the reservation becoming a final charge? Assume these ledger amounts are confirmed.",
+    "max_turns": 12,
+    "timeout_seconds": 180,
+    "allowed_tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Skill"
+    ]
+  },
+  "graders": [
+    {
+      "name": "skill-loaded",
+      "type": "tool_used",
+      "tool": "Skill",
+      "input_match": "aiglot-run-translations"
+    },
+    {
+      "name": "resume-budget",
+      "type": "llm",
+      "focus": "last_message",
+      "criteria": "PASS if it refuses launch because 7 spent +2 reserved+3 pending=12 exceeds campaign ceiling10, distinguishes available workspace balance from authorization, says only1 budget remains for new work and replaces the reservation with the final charge without double counting. FAIL if it resets the campaign budget on resume, ignores prior charges/reservations, or allows launch based on workspace100."
+    },
+    {
+      "name": "no-write",
+      "type": "regex",
+      "target": "mock_calls",
+      "pattern": "approve_translation|create_translation|update_batch|cancel_translation",
+      "match": "not_contains"
+    }
+  ]
+}

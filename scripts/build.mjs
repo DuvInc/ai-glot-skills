@@ -8,7 +8,7 @@ const config=JSON.parse(readFileSync(resolve(ROOT,"packaging/config.json"),"utf8
 const dist=resolve(ROOT,"dist");
 rmSync(dist,{recursive:true,force:true});mkdirSync(dist,{recursive:true});
 const skillFiles=config.skills.flatMap(name=>walk(resolve(ROOT,"skills",name)).map(file=>"skills/"+name+"/"+file));
-const common=["README.md","LICENSE","COMPATIBILITY.md","assets/icon.png","assets/logo.png",...skillFiles];
+const common=["README.md","LICENSE","COMPATIBILITY.md","VALIDATION.md","CHANGELOG.md","CONTRIBUTING.md","SECURITY.md","packaging/SUBMISSION.md","assets/icon.png","assets/logo.png",...skillFiles];
 const packages=[
  ["ai-glot-openai-"+version+".zip",["plugin.json","mcp.json",...common],"",null],
  ["ai-glot-claude-"+version+".zip",[".claude-plugin/plugin.json",".mcp.json",...common],"",null],

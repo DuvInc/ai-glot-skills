@@ -1,6 +1,12 @@
 # Changelog
 
-## 0.2.0 candidate
+## 0.2.0 candidate 2
+
+- Include linked usage/review guides in plugin ZIPs and check every local Markdown link in archives.
+- Distinguish settled charges, active reservations and pending costs when resuming a campaign.
+- Keep the budget example at one quality tier and clarify that external PUT is an MCP requirement.
+
+## 0.2.0 candidate 1
 
 - Add workspace onboarding, credit/usage diagnostics and translation campaign skills.
 - Recommend CLI, MCP and REST by actual runtime and task; document equivalent operations.

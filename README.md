@@ -17,19 +17,19 @@ skill does not connect an account or grant file access.
 
 ## Install
 
-This is the `v0.2.0-rc.1` release candidate. Stable installation from `main`
+This is the `v0.2.0-rc.2` release candidate. Stable installation from `main`
 will be available after the candidate is merged.
 
 Install a selected skill in a compatible coding agent:
 
 ```sh
-npx skills add https://github.com/DuvInc/ai-glot-skills/tree/v0.2.0-rc.1 --skill aiglot-localize-repo --agent codex
+npx skills add https://github.com/DuvInc/ai-glot-skills/tree/v0.2.0-rc.2 --skill aiglot-localize-repo --agent codex
 ```
 
 For Claude Code, clone the candidate and add its local marketplace:
 
 ```sh
-git clone --branch v0.2.0-rc.1 --depth 1 https://github.com/DuvInc/ai-glot-skills.git
+git clone --branch v0.2.0-rc.2 --depth 1 https://github.com/DuvInc/ai-glot-skills.git
 ```
 
 ```text
@@ -87,12 +87,15 @@ cost for the selected quality tier. Respect any existing user authorization that
 covers that plan and budget; ask when an unresolved choice would change cost,
 scope or the destination.
 
-Binary upload needs file bytes and an external HTTP PUT client. MCP alone
+MCP binary upload needs file bytes and an external HTTP PUT client. MCP alone
 does not make arbitrary chat attachments readable. When the host lacks these
 capabilities, use the AI Glot app, a permitted HTTPS file URL or the local CLI.
 The skills do not claim access they do not have.
 
 ## Development and releases
+
+These commands require a source checkout. ZIPs are host installation packages,
+not npm development checkouts.
 
 ```sh
 npm ci
@@ -106,7 +109,7 @@ digests and SHA256SUMS in `dist/`. Packages contain no credentials, hooks or
 automatic approval grants. The static catalog is a build artifact, not a claim
 that the production MCP server currently serves Skills over MCP.
 
-See [VALIDATION.md](VALIDATION.md), [CONTRIBUTING.md](CONTRIBUTING.md), [evals/README.md](evals/README.md) and
+See [VALIDATION.md](VALIDATION.md), [CONTRIBUTING.md](CONTRIBUTING.md), [evaluation guide](https://github.com/DuvInc/ai-glot-skills/blob/v0.2.0-rc.2/evals/README.md) and
 [packaging/SUBMISSION.md](packaging/SUBMISSION.md).
 
 ## Documentation and support

@@ -66,3 +66,8 @@ test("refuses generated guidance that differs from the common source",()=>{
   assert.throws(()=>validateRepository(p),/Shared reference drift/);
  }finally{rmSync(p,{recursive:true,force:true});}
 });
+
+test("every relative Markdown link resolves inside its distributed archive",()=>{
+ const program='import pathlib,zipfile,json,re,posixpath,sys\nroot=pathlib.Path(sys.argv[1])\nerrors=[]\nfor archive in root.glob("*.zip"):\n with zipfile.ZipFile(archive) as z:\n  names=set(z.namelist())\n  for name in names:\n   if not name.endswith(".md"): continue\n   for link in re.findall(r"\\]\\(([^)]+)\\)",z.read(name).decode()):\n    if "://" in link or link.startswith("#"): continue\n    target=posixpath.normpath(posixpath.join(posixpath.dirname(name),link.split("#")[0]))\n    if target not in names: errors.append(archive.name+":"+name+" -> "+link)\nprint(json.dumps(errors))';
+ assert.deepEqual(JSON.parse(execFileSync("python3",["-c",program,resolve(ROOT,"dist")],{encoding:"utf8"})),[]);
+});
