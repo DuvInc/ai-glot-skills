@@ -14,6 +14,8 @@ The connection-failure case initially revealed a write attempt after a failed ac
 
 ## Installation and host limits
 
+Public installation from the candidate tag with the documented Vercel skills command succeeded in an isolated temporary project for Codex. All five installed files matched the source bytes. The installed JSON helper validated the real translated synthetic fixture. No global agent configuration was changed.
+
 The build produces self-contained individual skills and separate Claude/OpenAI plugin archives. Official portable schemas and native Claude manifest validation cover packaging.
 
 Direct ChatGPT portal, Claude Desktop/mobile and marketplace review have not been completed. Directory approval is separate from repository publication. The static skills catalog is not served by the production MCP server.
