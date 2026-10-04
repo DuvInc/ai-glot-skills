@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+- Recommend Full access for agent onboarding, using all eight advertised OAuth scopes.
+- Align the canonical setup guide, CLI examples and packaged skill references.
+- Preserve user consent, administrator limits and setup verification without credit spend.
+
 ## 0.2.0
 
 - Publish the five validated skills and host packages as the first stable release.

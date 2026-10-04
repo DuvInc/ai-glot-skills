@@ -52,13 +52,32 @@ an existing file before editing it, merge the named entry and avoid duplicates.
 Use the active project's configuration when appropriate; do not silently make
 a global installation. Never disable host approvals or change tool auto-grants.
 
+### Recommended OAuth permissions: Full access
+
+For a new connection, recommend **Full access** so translations, usage checks,
+history management and glossary work do not require another OAuth setup later.
+When the client supports explicit OAuth scopes, request all eight permissions
+advertised by AI Glot:
+
+```text
+account:read,usage:read,batches:read,batches:write,batches:create,glossaries:read,glossaries:write,webhooks:write
+```
+
+If the host offers a permission preset, recommend **Full access**. Otherwise,
+use its documented scope controls and let the user review the OAuth consent
+screen. `webhooks:write` is advertised but not active yet; its consent description
+covers the future webhook capability. Workspace administrator limits still
+apply. Respect an explicit request for narrower access and do not silently
+widen an existing grant. Full access grants capabilities, not permission to
+start a translation or change data during setup.
+
 ### Codex with a terminal
 
 If AI Glot is not already provided by an installed plugin:
 
 ```sh
 codex mcp add aiglot --url https://mcp.ai-glot.com/mcp
-codex mcp login aiglot
+codex mcp login aiglot --scopes account:read,usage:read,batches:read,batches:write,batches:create,glossaries:read,glossaries:write,webhooks:write
 codex mcp list
 ```
 
@@ -184,7 +203,7 @@ host needs the stdio bridge. Reuse it if already installed:
 
 ```sh
 npm install --global @ai-glot/cli@0.3.4
-aiglot auth login --scope account:read,batches:read,batches:create
+aiglot auth login --scope account:read,usage:read,batches:read,batches:write,batches:create,glossaries:read,glossaries:write,webhooks:write
 aiglot account --json
 ```
 
@@ -193,12 +212,12 @@ on this machine. Follow the CLI's displayed device instructions; do not collect
 credentials in chat. For a host supporting only stdio, configure it to run
 `aiglot mcp` using its documented format after CLI login.
 
-Permissions depend on the task: `account:read` is enough for setup verification;
-translation needs `account:read,batches:read,batches:create`. History edits or
-cancel need `batches:write`; glossary work needs its glossary scopes. Request
-only the intended permissions and have the user review the consent screen.
-Default CLI login omits `batches:create`. A write permission permits an operation;
-it does not authorize an agent to spend credits during setup.
+Use the full-access scope list above for the recommended initial setup. The
+account read used to verify the connection only needs `account:read`, but that
+minimum is not the recommended onboarding grant. Default CLI login omits
+`batches:create`, so pass the explicit scope list to avoid a second login for
+translations. A write permission permits an operation; it does not authorize
+an agent to spend credits during setup.
 
 If the chosen host supports Agent Skills but no plugin was installed, install
 the existing release using the host-specific agent value accepted by the skills
@@ -207,20 +226,22 @@ Do not guess an agent identifier or force installation into an unrelated client.
 Verified example for Codex, project-local:
 
 ```sh
-npx skills add https://github.com/DuvInc/ai-glot-skills/tree/v0.2.0 --skill aiglot-manage-workspace --agent codex
+npx skills add https://github.com/DuvInc/ai-glot-skills/tree/v0.2.1 --skill aiglot-manage-workspace --agent codex
 ```
 
 Other available skills are `aiglot-translate-file`, `aiglot-localize-repo`,
 `aiglot-run-translations` and `aiglot-manage-glossary`. Install the ones relevant
 to the user's work. Instructions do not grant access to chat attachments or
-authenticate an account. Downloads: https://github.com/DuvInc/ai-glot-skills/releases/tag/v0.2.0
+authenticate an account. Downloads: https://github.com/DuvInc/ai-glot-skills/releases/tag/v0.2.1
 
 ## 4. Verify without spending
 
 Let the user sign in, select the intended workspace and accept OAuth themselves.
 After any required reload, read `get_account` through MCP or `aiglot account
 --json` through the chosen CLI profile. Verify workspace identity, granted
-scopes, relevant entitlements and balance. Do not create or approve a translation
+scopes, relevant entitlements and balance. Check whether the recommended full
+access was granted; report any host or administrator restriction instead of
+claiming full access. Do not create or approve a translation
 to test access. Do not silently switch workspaces when the identity is wrong.
 
 Report these separately: skills installed (or not requested), connector/CLI
