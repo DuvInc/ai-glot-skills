@@ -17,6 +17,15 @@ API key, OAuth token or callback URL in the conversation.
 
 Identify the actual client and capabilities, not just the model name: terminal,
 configuration access, native plugin installation, remote MCP and local files.
+Use the client's name provided by the user or host. A Linux execution sandbox
+is not the client: missing Codex/Claude/OpenCode binaries does not identify the
+web product or establish whether its native connectors are supported. If the
+user is in Mistral Code on the web, do not offer instructions for unrelated
+agents. Check that product's official connector documentation; do not assume
+Mistral Work connectors also apply to Code. Mistral Work's documented custom
+connector route is Connectors > Add Connector > Custom MCP Connector, followed
+by the workspace MCP URL and OAuth consent (administrator access required):
+https://docs.mistral.ai/vibe/work/connectors/mcp-connectors
 Ask which client only if it cannot be determined. Reuse an existing working
 AI Glot connection. Read `get_account` on that connection before changing
 anything. Host-prefixed tool names are normal. If authentication has expired,
@@ -220,3 +229,9 @@ current conversation, and any remaining reload or user action. If a step is
 unverified, say so. Being listed in configuration is not proof of connection.
 Setup consumes no translation credits. Real-host acceptance varies; these
 documented recipes do not certify untested client/version combinations.
+
+Keep the final answer specific to the actual client. For an unavailable setup,
+give only its verified manual route, in at most four steps, and the exact
+remaining user action. Do not paste every client recipe or ask the user to run
+commands for another agent. If no supported route for that product can be
+verified, say that clearly; do not call generic MCP instructions "exact steps".
