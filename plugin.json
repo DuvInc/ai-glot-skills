@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ai-glot",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Set up your AI Glot workspace, check credits, translate files, run multilingual campaigns, localize repository resources and manage terminology.",
   "author": {
     "name": "AI Glot",

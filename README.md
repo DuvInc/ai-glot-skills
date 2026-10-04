@@ -22,19 +22,19 @@ This GitHub file is the single source for client-by-client setup; the AI Glot do
 link here instead of maintaining duplicate instructions. For a human-friendly
 overview of AI Glot skills and MCP, see [Connect AI Glot with MCP](https://ai-glot.com/docs/mcp/overview).
 
-Stable version: `v0.2.0`. See the validation report for verified environments
+Stable version: `v0.2.1`. See the validation report for verified environments
 and directory-review limits.
 
 Install a selected skill in a compatible coding agent:
 
 ```sh
-npx skills add https://github.com/DuvInc/ai-glot-skills/tree/v0.2.0 --skill aiglot-localize-repo --agent codex
+npx skills add https://github.com/DuvInc/ai-glot-skills/tree/v0.2.1 --skill aiglot-localize-repo --agent codex
 ```
 
 For Claude Code, clone the release and add its local marketplace:
 
 ```sh
-git clone --branch v0.2.0 --depth 1 https://github.com/DuvInc/ai-glot-skills.git
+git clone --branch v0.2.1 --depth 1 https://github.com/DuvInc/ai-glot-skills.git
 ```
 
 ```text
@@ -70,12 +70,16 @@ sign in on your machine:
 
 ```sh
 npm install --global @ai-glot/cli@0.3.4
-aiglot auth login --scope account:read,batches:read,batches:create
+aiglot auth login --scope account:read,usage:read,batches:read,batches:write,batches:create,glossaries:read,glossaries:write,webhooks:write
 aiglot account --json
 ```
 
-The default CLI OAuth login omits `batches:create`. Request it explicitly for
-translation. Glossary management instead needs `account:read,glossaries:read,glossaries:write`.
+Recommend **Full access** when connecting an agent so translations, usage,
+history and glossaries do not need another OAuth setup. The command requests
+all eight advertised scopes, including `webhooks:write`, which is not active
+yet. Default CLI login omits `batches:create`, so use the explicit scope list.
+The user reviews consent and can request narrower access. Setup never starts
+a translation or spends credits.
 Workspace membership and administrator scope ceilings still apply. Do not
 paste an API key into a conversation or copy someone else's workspace credential.
 
@@ -114,7 +118,7 @@ digests and SHA256SUMS in `dist/`. Packages contain no credentials, hooks or
 automatic approval grants. The static catalog is a build artifact, not a claim
 that the production MCP server currently serves Skills over MCP.
 
-See [VALIDATION.md](VALIDATION.md), [CONTRIBUTING.md](CONTRIBUTING.md), [evaluation guide](https://github.com/DuvInc/ai-glot-skills/blob/v0.2.0/evals/README.md) and
+See [VALIDATION.md](VALIDATION.md), [CONTRIBUTING.md](CONTRIBUTING.md), [evaluation guide](https://github.com/DuvInc/ai-glot-skills/blob/v0.2.1/evals/README.md) and
 [packaging/SUBMISSION.md](packaging/SUBMISSION.md).
 
 ## Documentation and support

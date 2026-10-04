@@ -9,7 +9,7 @@
       "name": "ai-glot",
       "source": "./",
       "description": "Set up your AI Glot workspace, check credits, translate files, run multilingual campaigns, localize repository resources and manage terminology.",
-      "version": "0.2.0"
+      "version": "0.2.1"
     }
   ]
 }

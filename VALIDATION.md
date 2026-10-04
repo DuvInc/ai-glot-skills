@@ -27,3 +27,15 @@ Public candidate installation is checked in an isolated temporary Codex project;
 Direct ChatGPT portal, Claude Desktop/mobile and directory review are not complete. CLI validation and model scenarios do not certify those surfaces. The static catalog is a build artifact, not Skills over MCP runtime support.
 
 No customer documents, credentials, raw account identifiers or signed URLs are included in the public reports.
+
+## 0.2.1 full-access recommendation (2026-10-04)
+
+The production OAuth metadata advertises eight scopes, matching the full-access
+preset in the API contract. Local Codex command help supports `mcp login --scopes`.
+The patch aligns setup and packaged references; it does not change server
+permissions, administrator ceilings or host tool-approval settings.
+
+Package checks passed: 22 Node tests, schema/reference validation, seven
+reproducible archives and native Claude strict validation. Two behavioral fixtures cover the default full-access recommendation and an explicit
+read-only request; these new model evaluations have not been run. No new
+end-to-end OAuth flow or paid translation is claimed for this patch.

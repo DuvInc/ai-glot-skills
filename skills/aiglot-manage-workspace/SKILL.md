@@ -16,7 +16,9 @@ and files, MCP for a connected assistant, REST for an existing application.
    connection is distinct from creating a workspace. Do not start a translation
    as a connectivity test or silently create credentials.
 2. Reuse the user's configured connection/profile. If disconnected, recommend
-   the appropriate supported OAuth flow. Do not ask for a token in chat.
+   the appropriate supported OAuth flow with Full access for a new setup,
+   unless the user explicitly requests narrower access. Follow the full scope
+   list in connection guidance. Do not ask for a token in chat.
    For headless CLI use device OAuth; for unattended CI use an administrator-
    provisioned scoped key in the CI secret manager. Do not initiate interactive
    login on a user's behalf unless their request covers setup.

@@ -7,7 +7,7 @@ version is 0.3.4; use it for PDF/local binary coverage.
 
 ```sh
 npm install --global @ai-glot/cli@0.3.4
-aiglot --profile my-workspace auth login --scope account:read,batches:read,batches:create
+aiglot --profile my-workspace auth login --scope account:read,usage:read,batches:read,batches:write,batches:create,glossaries:read,glossaries:write,webhooks:write
 aiglot --profile my-workspace auth status --json
 aiglot --profile my-workspace account --json
 aiglot --profile my-workspace credits --json
@@ -16,10 +16,12 @@ aiglot --profile my-workspace usage --from 2026-10-01 --to 2026-10-02 --granular
 
 Use a named profile deliberately, after setup is authorized. OAuth login uses
 the user's own browser; add `--device` for SSH/headless machines. Read-only
-login can request just `account:read`. Default login omits `batches:create`;
-request it explicitly for translations. Add `batches:write` only if intended
-history edits/cancellation need it. Glossary workflows require
-`account:read,glossaries:read,glossaries:write` as appropriate.
+access should be used only when the user explicitly requests it. Recommend
+Full access for initial setup so translation, usage, history and glossary work
+do not need another login. The explicit list includes all eight advertised
+permissions, including the not-yet-active `webhooks:write`. Default login omits
+`batches:create`; use the explicit list above. Administrator limits and the
+user's consent still apply, and setup never starts a translation or spends credits.
 
 An environment `AIGLOT_API_KEY` overrides stored credentials even when a
 profile is selected. A profile mismatch can therefore come from the environment.

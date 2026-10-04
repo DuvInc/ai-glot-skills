@@ -13,6 +13,15 @@ read [custom guidelines](guidelines.md).
 
 ## MCP
 
+For a new connection, recommend Full access and all eight advertised OAuth
+scopes: account:read, usage:read, batches:read, batches:write, batches:create,
+glossaries:read, glossaries:write and webhooks:write. This avoids reconnecting
+when the user starts translation, usage, history or glossary work. webhooks:write
+is advertised for a future capability and is not active yet. Let the user review
+the consent screen; administrator scope ceilings still apply. Respect explicit
+requests for narrower access and preserve existing grants. Full access does not
+authorize translations, glossary changes or any credit spend during setup.
+
 Connect https://mcp.ai-glot.com/mcp through the host's OAuth flow. Installing
 a skill does not perform that login. Look up the available tools by their base
 names; hosts may add a namespace prefix. Call get_account when available to
@@ -35,11 +44,8 @@ Use the official @ai-glot/cli package. Tested minimum is 0.3.0; the verified
 published version for this release is 0.3.4. PDF requires 0.3.4 or later. Run aiglot help --json or command
 --help before using an unfamiliar option.
 
-For translation OAuth login:
-aiglot auth login --scope account:read,batches:read,batches:create
-
-For glossary OAuth login:
-aiglot auth login --scope account:read,glossaries:read,glossaries:write
+For the recommended full-access OAuth login:
+aiglot auth login --scope account:read,usage:read,batches:read,batches:write,batches:create,glossaries:read,glossaries:write,webhooks:write
 
 Default OAuth login omits batches:create. Interactive login belongs in the
 user's own browser or device-code flow; never collect a key in chat.
