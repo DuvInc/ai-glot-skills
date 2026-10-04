@@ -1,8 +1,8 @@
 # Connect this agent to AI Glot
 
-Official AI Glot setup instructions. Canonical public URL:
-https://ai-glot.com/docs/agent-setup/prompt.md
-Source: https://github.com/DuvInc/ai-glot-skills/tree/main/agent-setup
+Canonical AI Glot agent setup instructions (maintain this procedure here; other
+AI Glot pages and setup prompts link to this file):
+https://github.com/DuvInc/ai-glot-skills/blob/main/agent-setup/prompt.md
 Reviewed against host documentation on 2026-10-04.
 If your reader cannot fetch Markdown, read this same document on the official
 GitHub source page above. Do not claim setup succeeded when instructions could

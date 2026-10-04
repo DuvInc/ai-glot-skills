@@ -17,12 +17,9 @@ skill does not connect an account or grant file access.
 
 ## Install
 
-Start with [Connect your AI agent](https://ai-glot.com/docs/mcp/agent-setup).
-The [setup instructions](agent-setup/prompt.md) adapt to the actual client,
-reuse existing connections and verify the account without spending credits.
-OAuth consent stays with the user; clients without setup tools receive manual
-steps. The docs site publishes a checked snapshot at
-https://ai-glot.com/docs/agent-setup/prompt.md.
+Use the [official AI Glot agent setup instructions](https://github.com/DuvInc/ai-glot-skills/blob/main/agent-setup/prompt.md).
+This GitHub file is the single source for setup across clients. The AI Glot docs
+link here instead of publishing another copy; you approve OAuth access yourself.
 
 Stable version: `v0.2.0`. See the validation report for verified environments
 and directory-review limits.
