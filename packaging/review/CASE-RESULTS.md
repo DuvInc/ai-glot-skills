@@ -8,6 +8,12 @@ See [live-evidence.json](live-evidence.json) for measured credits and structure 
 
 The native Codex connection exposes only account:read. Its account call succeeds, but it cannot exercise translation tools or the UI. The authenticated CLI MCP bridge has the necessary scopes and was used for the transport tests. This does not prove tool selection or rendering inside Claude or ChatGPT.
 
+## Dedicated reviewer verification
+
+A separate synthetic-only reviewer workspace was confirmed through its browser account menu and normal OAuth device consent. A named CLI profile is bound to that workspace and has the requested read, translation creation/management and glossary scopes. Four Standard runs repeated the JSON, DOCX and CSV checks successfully, spending 26 credits. Combined initiative spend is 35 against the founder-authorized ceiling of 100, including the earlier 9 Lite credits. A synthetic brand-preservation glossary was created and read back.
+
+The reviewer workspace is currently Free: Standard works, Lite and custom guidelines are unavailable. Paid feature coverage remains a reviewer-access gap. In the available Claude Team account, Add custom connector is disabled, so in-host cards, response screenshots and recording remain unverified.
+
 ## Manifest review case status
 
 | Case | Service evidence | Assistant/portal case |
@@ -21,4 +27,4 @@ The native Codex connection exposes only account:read. Its account call succeeds
 | Missing target language | Drafted clarification expectation | Not run |
 | Another customer's workspace | Drafted refusal expectation | Not run |
 
-No customer files, raw account identifiers, signed download URLs or credentials are included here. Glossary mutation/cancellation and every-tool Claude conversation acceptance remain separate checks; they have not been marked passed.
+No customer files, raw account identifiers, signed download URLs or credentials are included here. Reviewer MCP checks additionally passed glossary list/get/edit, plan refinement, batch rename/archive/restore and Free Lite refusal without starting a translation. Cancellation before approval returned batch_not_editable; the disposable batch was archived without spending credits. Running cancellation, glossary deletion, feedback submission, cross-workspace access and every-tool Claude conversation acceptance have not been marked passed.

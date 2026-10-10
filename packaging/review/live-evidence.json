@@ -36,5 +36,72 @@
       "credit_cost": 2,
       "structure_verified": true
     }
-  ]
+  ],
+  "reviewer_workspace_checks": {
+    "checked_at": "2026-10-10T12:58:32.933Z",
+    "transport": "CLI and authenticated MCP bridge; not in-host UI acceptance",
+    "tool_count": 18,
+    "annotations_verified": true,
+    "ui_resource_verified": true,
+    "stale_revision_rejected": true,
+    "quality": "standard",
+    "authorized_ceiling": 91,
+    "credits_spent": 26,
+    "jobs": [
+      {
+        "format": "json",
+        "target": "French",
+        "status": "passed",
+        "credit_cost": 6,
+        "structure_verified": true
+      },
+      {
+        "format": "json",
+        "target": "German",
+        "status": "passed",
+        "credit_cost": 6,
+        "structure_verified": true
+      },
+      {
+        "format": "docx",
+        "target": "German",
+        "status": "passed",
+        "credit_cost": 8,
+        "structure_verified": true
+      },
+      {
+        "format": "csv",
+        "target": "French",
+        "status": "passed",
+        "credit_cost": 6,
+        "structure_verified": true
+      }
+    ]
+  },
+  "initiative_budget": {
+    "authorized_ceiling": 100,
+    "credits_spent": 35,
+    "remaining_ceiling": 65
+  },
+  "reviewer_tool_checks": {
+    "checked_at": "2026-10-10T13:01:22Z",
+    "transport": "authenticated reviewer MCP bridge; not host UI",
+    "tool_checks": [
+      "list_batches",
+      "list_glossaries",
+      "get_glossary",
+      "edit_glossary_terms",
+      "plan_translation",
+      "update_batch"
+    ],
+    "free_lite_approval_rejected": true,
+    "preapproval_cancellation_rejected": "batch_not_editable",
+    "disposable_batch_archived_without_approval": true,
+    "credits_spent": 0,
+    "untested_tools": [
+      "send_feedback",
+      "delete_glossary"
+    ],
+    "positive_running_cancellation_test": "not run"
+  }
 }
