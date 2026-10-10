@@ -29,9 +29,11 @@ At https://claude.ai/directory/manage, use the intended personal/paid Claude org
 
 - Real OpenAI demo recording, hosted and access verified.
 - Actual in-host connection/tool/UI tests and saved-version portal tests.
-- Dedicated reviewer credentials/workspace seeded and validated, never public.
+- Dedicated reviewer credentials supplied through secure portal fields. Workspace/OAuth/Standard fixtures/glossary are verified; Lite and custom-guideline access remain pending.
 - Claude carousel screenshots and paired prompts.
 - Verified publisher/domain and selected organization; legal/policy attestations by the publisher.
+
+The available employer Team account disables Add custom connector. Use an AI Glot-owned eligible account for the remaining Claude host tests and submission; do not change employer controls.
 
 No demo URL, screenshot, reviewer credential, portal draft or review status is fabricated. npm run submission:check -- --strict deliberately fails until required package recording evidence exists. It cannot certify private portal gates.
 

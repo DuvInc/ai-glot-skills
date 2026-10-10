@@ -12,3 +12,7 @@ Required setup:
 Enter email/password, workspace name and exact sign-in instructions only into each portal's secure reviewer-access fields. Do not put them in plugin.json, mcp.json, public README, fixtures, screenshots, GitHub issues or release assets. Keep a private operational record of access and available credit balance; never include credentials in the public build.
 
 The reviewer must be able to connect through the normal OAuth flow and choose only the review workspace. Verify this account before marking the submission ready.
+
+## Verified checkpoint, 2026-10-10
+
+The dedicated synthetic-only account and workspace, normal device OAuth, four completed Standard translations and one brand-preservation glossary have been verified. Credentials and raw workspace identifiers are deliberately excluded here. The workspace is currently Free; Lite and custom guidelines are unavailable. Complete paid-feature reviewer access before demonstrating those features or marking the full submission ready. The existing seeded files are subject to normal retention, so recheck downloads immediately before handing access to reviewers.

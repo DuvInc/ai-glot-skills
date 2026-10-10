@@ -5,7 +5,7 @@ A script is not a recording. No demo_recording_url is declared until a real reco
 Use the exact packaged version in a connected ChatGPT or Claude account. Use the dedicated reviewer account and these synthetic fixtures only.
 
 1. Show the connection and read workspace features/credits without starting work.
-2. Attach fixtures/messages.json. Ask for French translation preserving keys and placeholders. Show the authoritative plan and measured Lite price, then explicitly approve. Show progress and download the checked output.
+2. Attach fixtures/messages.json. Ask for French translation preserving keys and placeholders. Show the authoritative plan and measured Standard price on the Free reviewer workspace, then explicitly approve. Show Lite only if a paid reviewer entitlement has actually been provisioned. Show progress and download the checked output.
 3. Ask to change a CSV scope before approval, show the updated plan, and demonstrate that an old plan cannot be approved.
 4. Show the binary DOCX upload and result, with its bold title and placeholder preserved. If a host cannot upload bytes, demonstrate the honest CLI/app handoff instead of claiming an upload.
 5. Show a missing-language clarification or an unsupported video request, with no spending tools called.
