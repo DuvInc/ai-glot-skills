@@ -6,12 +6,13 @@ const json=(p,value)=>{mkdirSync(resolve(root,p,".."),{recursive:true});writeFil
 const config=read("packaging/config.json"),pkg=read("package.json");
 const description="Set up your AI Glot workspace, check credits, translate files, run multilingual campaigns, localize repository resources and manage terminology.";
 const identity={name:config.name,version:pkg.version,description,author:{name:config.author,url:"https://ai-glot.com"},homepage:config.homepage,repository:config.repository,license:"MIT",keywords:["translation","localization","i18n","documents"]};
-json("plugin.json",{$schema:"https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",...identity,extensions:{"com.openai":{interface:{displayName:config.displayName,shortDescription:"Translate files and preserve their structure.",longDescription:description,developerName:config.author,category:"Productivity",capabilities:["Read","Write"],websiteURL:"https://ai-glot.com",privacyPolicyURL:config.privacy,termsOfServiceURL:config.terms,defaultPrompt:["Check my AI Glot workspace, credits and usage without starting a translation.","Translate this document into three separate language versions within a combined budget.","Translate this JSON into French with AI Glot and show its plan and cost.","Localize my application strings with AI Glot while preserving keys and placeholders.","Review my AI Glot glossary and add the mappings I provide."],composerIcon:"./assets/icon.png",logo:"./assets/logo.png"}}}});
+const listing=read("packaging/listing.json");
+json("plugin.json",{$schema:"https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",...identity,extensions:{"com.openai":{...listing,onboardingSkill:"./skills/aiglot-manage-workspace/SKILL.md"}}});
 json("mcp.json",{$schema:"https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",mcpServers:{aiglot:{type:"streamable-http",url:config.endpoint}}});
 json(".mcp.json",{mcpServers:{aiglot:{type:"http",url:config.endpoint}}});
 json(".claude-plugin/plugin.json",{...identity,displayName:config.displayName,mcpServers:"./.mcp.json"});
 json("packaging/claude-directory.json",{displayName:config.displayName,documentationUrl:config.homepage,supportUrl:config.support,privacyPolicyUrl:config.privacy,termsOfServiceUrl:config.terms,icon:"assets/icon.png"});
-json(".claude-plugin/marketplace.json",{name:config.marketplace,description:"AI Glot file translation and terminology workflows.",owner:{name:config.author},plugins:[{name:config.name,source:"./",description,version:pkg.version}]});
+json(".claude-plugin/marketplace.json",{name:config.marketplace,description:"AI Glot file translation and terminology workflows.",owner:{name:config.author},plugins:[{name:config.name,source:"./plugins/ai-glot",description,version:pkg.version}]});
 const names={
  "aiglot-manage-workspace":["Manage your AI Glot workspace","Connect your workspace and inspect credits and usage."],
  "aiglot-run-translations":["Run translation campaigns","Run multilingual jobs, track batches and recover results."],

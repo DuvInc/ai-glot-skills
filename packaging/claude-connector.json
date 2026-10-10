@@ -1,0 +1,19 @@
+{
+  "name": "AI Glot",
+  "oneLiner": "Translate structured files with a reviewed plan, explicit approval and downloadable results.",
+  "description": "Connect your AI Glot workspace to translate documents, product catalogs, localization files and subtitles. Review the exact scope, exclusions and credit cost, refine the plan in conversation, explicitly approve the current version, follow progress and download the output. The connector can also read workspace credits and usage, find previous translations and manage glossary terms. A compatible Claude client displays the MCP Apps review card; text tools remain usable without it. Attachment transfer requires access to bytes and an external HTTP PUT. If the client cannot send the attachment, use the AI Glot CLI or web app. An AI Glot account is required. Translations consume workspace credits; subscription and credit purchases happen on the AI Glot website.",
+  "endpoint": "https://mcp.ai-glot.com/mcp",
+  "documentationUrl": "https://ai-glot.com/docs/mcp/overview",
+  "privacyPolicyUrl": "https://ai-glot.com/privacy-policy",
+  "supportContact": "hi@ai-glot.com",
+  "website": "https://ai-glot.com",
+  "legalPublisher": "Guillaume Duvernay",
+  "categories": ["Productivity", "Developer tools"],
+  "authentication": "OAuth 2.1 with PKCE and dynamic client registration; scopes limited to the selected AI Glot workspace and user role",
+  "allowedLinkUris": ["https://ai-glot.com", "https://app.ai-glot.com", "https://api.ai-glot.com", "https://mcp.ai-glot.com"],
+  "pluginRepository": "https://github.com/DuvInc/ai-glot-skills",
+  "pluginFolder": "plugins/ai-glot",
+  "countryTargeting": "All countries offered by the portal",
+  "screenshots": [],
+  "readyToSubmit": false
+}

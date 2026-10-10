@@ -1,0 +1,40 @@
+{
+  "checked_at": "2026-10-10T12:20:55.803Z",
+  "transport": "CLI and authenticated MCP bridge; not in-host UI acceptance",
+  "tool_count": 18,
+  "annotations_verified": true,
+  "ui_resource_verified": true,
+  "stale_revision_rejected": true,
+  "authorized_ceiling": 20,
+  "credits_spent": 9,
+  "jobs": [
+    {
+      "format": "json",
+      "target": "French",
+      "status": "passed",
+      "credit_cost": 2,
+      "structure_verified": true
+    },
+    {
+      "format": "json",
+      "target": "German",
+      "status": "passed",
+      "credit_cost": 2,
+      "structure_verified": true
+    },
+    {
+      "format": "docx",
+      "target": "German",
+      "status": "passed",
+      "credit_cost": 3,
+      "structure_verified": true
+    },
+    {
+      "format": "csv",
+      "target": "French",
+      "status": "passed",
+      "credit_cost": 2,
+      "structure_verified": true
+    }
+  ]
+}
