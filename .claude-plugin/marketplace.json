@@ -7,9 +7,9 @@
   "plugins": [
     {
       "name": "ai-glot",
-      "source": "./",
+      "source": "./plugins/ai-glot",
       "description": "Set up your AI Glot workspace, check credits, translate files, run multilingual campaigns, localize repository resources and manage terminology.",
-      "version": "0.2.1"
+      "version": "0.3.0"
     }
   ]
 }

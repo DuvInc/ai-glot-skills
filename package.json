@@ -1,6 +1,6 @@
 {
   "name": "ai-glot-skills",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -13,7 +13,8 @@
     "test": "node --test test/*.test.mjs",
     "build": "node scripts/build.mjs",
     "check": "npm run generate && npm run validate && npm test && npm run build",
-    "smoke": "node scripts/live-smoke.mjs"
+    "smoke": "node scripts/live-smoke.mjs",
+    "submission:check": "node scripts/validate-submission.mjs"
   },
   "devDependencies": {
     "ajv": "8.20.0",
