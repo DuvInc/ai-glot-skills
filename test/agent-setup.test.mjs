@@ -15,3 +15,10 @@ test('setup shell examples never invoke a paid or data-changing AI Glot operatio
   assert.doesNotMatch(shell, /aiglot\s+(batches|glossaries|api)\b/);
   assert.doesNotMatch(shell, /--key\b|Authorization:|auto.approve|dangerously/);
 });
+test('the guest upload example prepares a plan without approving or spending', () => {
+  const shell = [...guide.matchAll(/```sh\n([\s\S]*?)\n```/g)].map(match => match[1]).join('\n');
+  assert.match(shell, /https:\/\/api\.ai-glot\.com\/v1\/guest\/batches/);
+  assert.doesNotMatch(shell, /\/approve\b|approve_translation/);
+  // The device code is read from the environment, never pasted literally.
+  assert.match(shell, /device_code=\$AIGLOT_DEVICE_CODE/);
+});
