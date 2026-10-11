@@ -359,7 +359,9 @@ their own AI Glot account with the purchase window open (the exact amount,
 packs, and the free sample when they are eligible). After they say they paid,
 check the balance (`get_account` or `aiglot account`), confirm with them, and
 approve again. They can also launch it from that page. Otherwise offer the
-lite quality or a narrower instruction.
+lite quality or a narrower instruction. If they translate regularly, mention
+the monthly plans listed in `payment.plans`: they cost less per credit, and the
+same page shows them.
 
 ## 4. Verify
 
