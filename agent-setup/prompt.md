@@ -4,7 +4,7 @@ Canonical AI Glot agent instructions (maintain this procedure here; other AI Glo
 pages and prompts link to it). Served at https://ai-glot.com/agent.md and kept
 on GitHub at
 https://github.com/DuvInc/ai-glot-skills/blob/main/agent-setup/prompt.md
-Reviewed against host documentation on 2026-10-11.
+Reviewed against host documentation on 2026-10-11 (guest route through the CLI 0.3.6).
 If your reader cannot fetch Markdown, read the GitHub page above. Do not claim
 anything succeeded when these instructions could not be read.
 
@@ -74,53 +74,80 @@ global installation. Never disable host approvals or change tool auto-grants.
 ### Route A: translate now, before the user has an account (guest upload)
 
 For a user who wants a file translated now and has no AI Glot account, when
-this agent can read the file's bytes and make an HTTPS request (a terminal or
-code execution with network access). Not for setup-only requests. Files up to
-5 MB; a larger file needs route B or C.
+this agent can read the file's bytes and run commands with network access. Not
+for setup-only requests. Files up to 5 MB; a larger file needs route B or C.
 
 AI Glot prepares the translation without an account: it reads the file and
 builds the plan, without translating anything and without any cost. The user
 then opens one link, signs up or signs in (about a minute), and launches the
-translation from there. Send the file and the user's instruction (what to
-translate, into which languages, what to leave untouched), plus this agent's
-name:
+translation there. A first file gets a free sample of up to 5,000 words (the
+whole file when it is shorter).
+
+**With Node.js (preferred).** The CLI keeps every secret out of this
+conversation: the device code waits in a private file, and the credential goes
+straight into the OS keychain, with automatic renewal.
 
 ```sh
-curl -sS https://api.ai-glot.com/v1/guest/batches \
-  -F "file=@products.csv" \
-  -F "instruction=Translate the description column into German and Spanish. Keep SKUs and URLs unchanged." \
-  -F "client_name=Claude Code"
+npx -y @ai-glot/cli@0.3.6 guest start products.csv \
+  --instruction "Translate the description column into German and Spanish. Keep SKUs and URLs unchanged." \
+  --agent-name "Claude Code"
 ```
 
-The response's `data` contains:
-
-- `batch.plan`: what will be translated, what will not (`not_included`), the
-  languages, word counts and a preview. Summarize it for the user in a few
-  lines, and say plainly if something they asked for is in `not_included`.
-- `claim.url` and `claim.expires_at`: give the user this link. It is valid for
-  2 hours; after that, upload again. The first 5,000 words of a first file are
-  free (the whole file if it is shorter).
-- `agent_connection`: an OAuth device code. Poll `token_endpoint` with
-  `grant_type=urn:ietf:params:oauth:grant-type:device_code`, `client_id` and
-  `device_code` every `interval` seconds. `authorization_pending` means the user
-  has not claimed yet; `slow_down` means poll less often. When the user claims
-  and keeps "Let my agent continue" ticked, the response is a bearer token for
-  their workspace.
+It prints the plan (languages, word counts, `not_included`) and `claim_url`,
+then returns. Summarize the plan for the user in a few lines, say plainly if
+something they asked for is in `not_included`, and give them `claim_url`
+(valid for 2 hours). Then wait for the claim:
 
 ```sh
+npx -y @ai-glot/cli@0.3.6 guest connect
+```
+
+Exit code 0 means connected; exit code 6 (`claim_pending`) means the user has
+not claimed yet: run it again. Once connected, this machine works on the user's
+workspace like any logged-in CLI (route B): follow the translation with
+`aiglot batches get <id>`, download it with `aiglot batches download <id>` once
+completed, and start new ones with `aiglot batches create`. Suggest
+`npm install --global @ai-glot/cli@0.3.6` so the command stays available.
+
+**Without Node.js (curl).** The upload response contains a device code, and the
+token response contains the user's credential. Both are secrets: write them to
+files only the user can read, and never print, echo or quote them.
+
+```sh
+umask 077
+mkdir -p ~/.config/ai-glot
+curl -sS https://api.ai-glot.com/v1/guest/batches \
+  -F "file=@products.csv" \
+  -F "instruction=Translate the description column into German. Keep SKUs unchanged." \
+  -F "client_name=Claude Code" \
+  -o ~/.config/ai-glot/guest.json
+```
+
+Read only `data.batch.plan` and `data.claim` from that file (for example with
+`jq '.data | {plan: .batch.plan, claim}'`), never `data.agent_connection`. Give
+the user `data.claim.url`. After they claim, exchange the device code without
+printing anything:
+
+```sh
+AIGLOT_DEVICE_CODE="$(jq -r .data.agent_connection.device_code ~/.config/ai-glot/guest.json)"
 curl -sS https://api.ai-glot.com/oauth/token \
   -d grant_type=urn:ietf:params:oauth:grant-type:device_code \
   -d client_id=aiglot-agent \
-  -d "device_code=$AIGLOT_DEVICE_CODE"
+  -d "device_code=$AIGLOT_DEVICE_CODE" \
+  -o ~/.config/ai-glot/token.json
 ```
 
-Keep the token in an environment variable for this session only (never in a
-committed file, never in the chat). With it, follow the translation at
-`GET https://api.ai-glot.com/v1/batches/{batch.id}` and fetch the result from
-`GET https://api.ai-glot.com/v1/batches/{batch.id}/result` once it is completed.
-The user launches the translation from the claim page; do not approve it
-yourself unless the user asks you to. For a lasting connection, offer route B
-or C afterwards: the user is now signed in, so it takes one click.
+If `token.json` holds `"error": "authorization_pending"`, the user has not
+claimed yet: wait `interval` seconds and run it again. Once it holds an
+`access_token`, use it only by reference, as a bearer for
+https://api.ai-glot.com/v1, for example
+`-H "Authorization: Bearer $(jq -r .access_token ~/.config/ai-glot/token.json)"`.
+It lasts 30 days. For a lasting connection, prefer route B or C afterwards: the
+user is signed in, so it takes one click.
+
+**After the claim, in a hosted assistant** (ChatGPT, Claude chat): connect the
+remote MCP server with route C; the user is already signed in, so OAuth is one
+click.
 
 If the guest upload is refused (daily limit, file too large, unsupported
 format), say why and offer route B or C, or https://app.ai-glot.com/signup.
@@ -152,7 +179,7 @@ or scripts. The CLI reads local bytes. CLI login does not authenticate the
 host's remote MCP connection. Reuse an installed CLI:
 
 ```sh
-npm install --global @ai-glot/cli@0.3.5
+npm install --global @ai-glot/cli@0.3.6
 aiglot auth login --scope account:read,usage:read,batches:read,batches:write,batches:create,glossaries:read,glossaries:write,webhooks:write
 aiglot account --json
 ```

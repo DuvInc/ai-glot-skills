@@ -22,3 +22,13 @@ test('the guest upload example prepares a plan without approving or spending', (
   // The device code is read from the environment, never pasted literally.
   assert.match(shell, /device_code=\$AIGLOT_DEVICE_CODE/);
 });
+test('the guest route never prints a secret', () => {
+  const shell = [...guide.matchAll(/```sh\n([\s\S]*?)\n```/g)].map(match => match[1]).join('\n');
+  // The CLI route is offered first and keeps the credential out of the conversation.
+  assert.match(shell, /@ai-glot\/cli@[\d.]+ guest start/);
+  assert.match(shell, /guest connect/);
+  // The curl route writes the device code and the token to files, never to stdout.
+  assert.match(shell, /-o ~\/\.config\/ai-glot\/guest\.json/);
+  assert.match(shell, /-o ~\/\.config\/ai-glot\/token\.json/);
+  assert.match(shell, /umask 077/);
+});
