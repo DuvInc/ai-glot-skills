@@ -349,8 +349,17 @@ authenticate an account. Downloads: https://github.com/DuvInc/ai-glot-skills/rel
 Creating a translation, planning it and the guest upload cost nothing. Credits
 are spent only when a translation is approved. Approve only after the user has
 seen the plan and the cost and said yes. Never buy credits or a plan for the
-user; when credits are short, AI Glot shows the free sample (on a first
-translation) and the purchase options in the app.
+user, and never enter payment details yourself.
+
+When credits are short, approval answers `insufficient_credits` (HTTP 402) with
+a `payment` object: credits needed, the balance, what is missing, the price in
+EUR and a `payment_url`. Tell the user the price and ask whether they want a
+payment link. If they do, give them `payment_url`: it opens this translation in
+their own AI Glot account with the purchase window open (the exact amount,
+packs, and the free sample when they are eligible). After they say they paid,
+check the balance (`get_account` or `aiglot account`), confirm with them, and
+approve again. They can also launch it from that page. Otherwise offer the
+lite quality or a narrower instruction.
 
 ## 4. Verify
 
