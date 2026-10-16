@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- MCP `approve_translation` requires `expected_plan_revision` (the `plan_revision` returned with the plan); `plan_changed` means re-read and show the plan again. REST keeps it optional and recommended.
+- Document `Idempotency-Key` for batch creation (CLI `--idempotency-key` and MCP `idempotency_key`): a retry returns the first batch, a different request with the same key is `idempotency_key_reused`.
+- Describe CLI 0.4.0 approval (confirmation, `--yes` without a terminal, exit 2 and no spend otherwise) next to 0.3.x behaviour.
+- Update the eval mocks and the live smoke to match.
+
 ## 0.2.1
 
 - Recommend Full access for agent onboarding, using all eight advertised OAuth scopes.

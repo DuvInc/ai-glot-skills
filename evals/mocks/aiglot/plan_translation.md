@@ -5,6 +5,7 @@ type: fixed
   "id": "11111111-1111-4111-8111-111111111111",
   "status": "awaiting_approval",
   "next_action": "review_plan",
+  "plan_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1",
   "plan": {
     "summary": "Translate the provided JSON values into French.",
     "will_translate": "All text values",

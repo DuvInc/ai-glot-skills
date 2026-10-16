@@ -28,6 +28,10 @@ aiglot batches create ./report.docx --instruction "Translate all eligible Englis
 aiglot batches create ./report.docx --instruction "Translate all eligible English text into German. Preserve structure, identifiers and in-content URLs." --json
 ```
 
+From CLI 0.4.0, add `--idempotency-key KEY` to each create, one distinct stable key
+per target, so a retried command returns the same batch instead of a duplicate.
+The same key with different content is HTTP 409 `idempotency_key_reused`.
+
 Save both returned IDs, inspect both full plans, confirm target/output shape and
 sum `plan.credits[quality]`. For example, Standard quotes of 4 and 5 credits cost
 9 credits together. An 8-credit campaign ceiling is a refusal before approval,
@@ -37,21 +41,27 @@ REST endpoint is assumed: the caller owns orchestration.
 Only after the entire campaign is authorized and affordable:
 
 ```sh
-aiglot batches approve FRENCH_BATCH_ID --quality standard --json
-aiglot batches approve GERMAN_BATCH_ID --quality standard --json
+aiglot batches approve FRENCH_BATCH_ID --quality standard --yes --json
+aiglot batches approve GERMAN_BATCH_ID --quality standard --yes --json
 aiglot batches get FRENCH_BATCH_ID --json
 aiglot batches get GERMAN_BATCH_ID --json
 ```
+
+From CLI 0.4.0, approve asks for confirmation and needs `--yes` without a terminal
+(otherwise it exits 2 and spends nothing); CLI 0.3.x has no `--yes`, omit it
+there. The CLI pins the plan revision it reads.
 
 Approval starts remote work and returns; the translations can run concurrently
 even when approval calls are sequential. These commands are a recipe, not an
 unconditional spend script. Attach entitled custom guidelines independently
 to each approval when needed. Use target-specific batches for different styles.
 
-MCP equivalent: distinct `create_translation` calls with each instruction,
-then account/plan review and `approve_translation` for the accepted IDs.
-REST equivalent: distinct `POST /v1/batches`, then `POST
-/v1/batches/ID/approve`. Use one credential/workspace throughout.
+MCP equivalent: distinct `create_translation` calls with each instruction (and an
+`idempotency_key` each), then account/plan review and `approve_translation` for
+the accepted IDs, each with its `plan_revision` as the required
+`expected_plan_revision`; on `plan_changed`, re-read and re-present that plan.
+REST equivalent: distinct `POST /v1/batches` (with an `Idempotency-Key` header),
+then `POST /v1/batches/ID/approve` (`expected_plan_revision` recommended). Use one credential/workspace throughout.
 
 ## Implement a bounded queue in an existing script
 

@@ -59,19 +59,26 @@ starts must not be promised to affect that run.
 
 ## Equivalent approval examples, only after plan/cost authorization
 
-CLI:
+CLI (review the plan with `aiglot batches get BATCH_ID` first; approve spends
+credits. From CLI 0.4.0 it asks for confirmation and needs `--yes` without a
+terminal, otherwise it exits 2 and spends nothing. CLI 0.3.x has no `--yes`:
+omit it there):
 ```sh
-aiglot batches approve BATCH_ID --quality standard --instructions "For a professional audience. Keep AI Glot and {count} unchanged." --json
+aiglot batches approve BATCH_ID --quality standard --instructions "For a professional audience. Keep AI Glot and {count} unchanged." --yes --json
 ```
 
-MCP arguments:
+MCP arguments (`expected_plan_revision` is required: the `plan_revision` of the
+plan the user reviewed, from `create_translation` with an instruction,
+`plan_translation` or `get_batch`; on `plan_changed`, re-read the plan and show
+it to the user again):
 ```json
-{"batch_id":"BATCH_ID","quality":"standard","custom_instructions":"For a professional audience. Keep AI Glot and {count} unchanged."}
+{"batch_id":"BATCH_ID","quality":"standard","custom_instructions":"For a professional audience. Keep AI Glot and {count} unchanged.","expected_plan_revision":"PLAN_REVISION"}
 ```
 
-REST body for `POST /v1/batches/BATCH_ID/approve`:
+REST body for `POST /v1/batches/BATCH_ID/approve` (`expected_plan_revision` is
+optional here but recommended):
 ```json
-{"quality":"standard","custom_instructions":"For a professional audience. Keep AI Glot and {count} unchanged."}
+{"quality":"standard","custom_instructions":"For a professional audience. Keep AI Glot and {count} unchanged.","expected_plan_revision":"PLAN_REVISION"}
 ```
 
 On Free, omit the custom field entirely and approve only a plan whose required

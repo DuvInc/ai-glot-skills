@@ -1,6 +1,6 @@
 # AI Glot skills
 
-![ai-glot-skills: a dithered banner with the project name and its one-line summary](docs/hero.png)
+![ai-glot-skills: a dithered banner with the project name and its one-line summary](https://raw.githubusercontent.com/DuvInc/ai-glot-skills/main/docs/hero.png)
 
 Translate structured files with your own AI Glot workspace from a compatible
 assistant or coding agent. These skills teach the workflow around AI Glot's
@@ -75,6 +75,14 @@ npm install --global @ai-glot/cli@0.3.4
 aiglot auth login --scope account:read,usage:read,batches:read,batches:write,batches:create,glossaries:read,glossaries:write,webhooks:write
 aiglot account --json
 ```
+
+Approval spends credits, so it is bound to the plan the user reviewed. MCP
+`approve_translation` requires `expected_plan_revision` (the `plan_revision`
+returned with the plan); on `plan_changed`, show the new plan again. From CLI
+0.4.0, `aiglot batches approve ID` asks for confirmation and needs `--yes`
+without a terminal; earlier 0.3.x versions do not prompt and do not know `--yes`.
+To retry a create safely, send an idempotency key (CLI `--idempotency-key` from
+0.4.0, MCP `idempotency_key`, REST `Idempotency-Key`).
 
 Recommend **Full access** when connecting an agent so translations, usage,
 history and glossaries do not need another OAuth setup. The command requests

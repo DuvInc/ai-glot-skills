@@ -9,12 +9,18 @@ aiglot account --json
 aiglot batches create ./source.json --instruction "Translate all string values into French. Preserve keys and non-string values." --json
 aiglot batches get BATCH_ID --json
 aiglot batches plan BATCH_ID --refine "Leave URLs unchanged." --json
-aiglot batches approve BATCH_ID --quality standard --instructions "Keep {count} and in-content URLs exactly as written." --json
+aiglot batches approve BATCH_ID --quality standard --instructions "Keep {count} and in-content URLs exactly as written." --yes --json
 aiglot batches download BATCH_ID --output ./translated.json
 ```
 
 Check the plan and authorization before the approve example. --instructions is
-the approval flag; --rules is not a CLI approval flag. A local-file CLI create
+the approval flag; --rules is not a CLI approval flag. Approve spends credits.
+From CLI 0.4.0 it asks for confirmation and needs `--yes` without a terminal:
+without it the command exits 2 and spends nothing, so review the plan with
+`aiglot batches get BATCH_ID` first. CLI 0.3.x has no `--yes` (omit it there).
+The CLI pins the plan revision it just read; MCP callers pass it as
+`expected_plan_revision` (required) and treat `plan_changed` as "show the new
+plan again". A local-file CLI create
 does not need a manually generated public URL.
 
 | State | Action |
@@ -31,9 +37,13 @@ If no complete upload exists, request a new session. Never retry PUT to overwrit
 A repeated create with the same upload_id recovers its original batch without
 changing the instruction; use plan/refinement for a changed request.
 
-After any other uncertain create response, reconcile history by recognizable
-filename and creation time before retrying. Do not assume arbitrary create
-calls are idempotent. Keep the returned batch ID for later recovery; upload_id
+To make a create safe to retry, send an idempotency key (CLI
+`batches create --idempotency-key KEY` from 0.4.0, MCP `idempotency_key`, REST
+`Idempotency-Key` header). A repeat returns the first batch without planning or
+cost; the same key with a different file, name or instruction is HTTP 409
+`idempotency_key_reused`, so use a new key for new work. Without a key, after any
+other uncertain create response, reconcile history by recognizable filename and
+creation time before retrying. Do not assume creates without a key are idempotent. Keep the returned batch ID for later recovery; upload_id
 recovery is limited by cleanup. Do not blindly retry approvals either: read the
 batch first. Insufficient credits, missing scopes and excluded scope are
 decisions to resolve, not reasons to loop. Cancellation only works for a running

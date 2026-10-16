@@ -15,7 +15,10 @@ run. No package requires MCP Apps UI, local hooks or blanket permission grants.
 
 Node.js 20+ is enough for the standalone JSON validator; repository development
 tools require Node.js 22+. CLI examples were checked against 0.3.0 and use the
-published @ai-glot/cli 0.3.4 for installation.
+published @ai-glot/cli 0.3.4 for installation. The skills also describe CLI
+0.4.0 behaviour (`batches approve` confirmation and `--yes`, `batches create
+--idempotency-key`), marked "from 0.4.0"; check `aiglot --version` before using
+those flags, which 0.3.x rejects.
 
 MCP uses https://mcp.ai-glot.com/mcp, not the experimental Code Mode endpoint.
 The API's workspace limits and selected quality tiers are read live, not frozen

@@ -47,7 +47,11 @@ known input limits and appropriate output checks.
    authorization covering its targets, quality, exclusions and total ceiling.
    Do not start a cheap subset if the complete campaign exceeds the authorized
    budget, unless the user authorized that partial delivery or priority order.
-7. Approve only awaiting_approval jobs. Launch at most two translating jobs at
+7. Approve only awaiting_approval jobs, each with the `plan_revision` of the plan
+   reviewed as `expected_plan_revision` (required for MCP; on `plan_changed`
+   re-read the job and show its new plan before any approval). From CLI 0.4.0
+   `batches approve` needs `--yes` without a terminal. Give each create an
+   idempotency key so a retry returns the same batch. Launch at most two translating jobs at
    once as a conservative client default, unless the user/client has an explicit
    justified limit. This is a client policy, not an advertised workspace limit.
    Recheck credits before later launches and stop new approvals on a shortage.

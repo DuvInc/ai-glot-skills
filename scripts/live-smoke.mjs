@@ -20,7 +20,9 @@ const cost=created.plan.credits.lite;
 console.log(JSON.stringify({batch_id:created.id,planned_lite_credits:cost,approved:false}));
 if(!approve) process.exit(0);
 if(cost>budget||cost>account.credit_balance) throw new Error("Measured cost exceeds the approved ceiling or balance");
-cli(["batches","approve",created.id,"--quality","lite","--instructions","Keep {name} and {count} exactly as written."]);
+// From CLI 0.4.0, approve asks for confirmation and needs --yes without a terminal; 0.3.x rejects the flag.
+const [major,minor]=execFileSync("aiglot",["--version"],{encoding:"utf8"}).trim().split(".").map(Number),yes=major>0||minor>=4?["--yes"]:[];
+cli(["batches","approve",created.id,"--quality","lite","--instructions","Keep {name} and {count} exactly as written.",...yes]);
 let batch;
 const deadline=Date.now()+180000;
 while(Date.now()<deadline){

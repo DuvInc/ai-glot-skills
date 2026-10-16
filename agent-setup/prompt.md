@@ -51,7 +51,9 @@ If a connection works and the user wants a translation: create it with the
 file and the instruction (`create_translation`, or `aiglot batches create`),
 show the user the plan (what will and will not be translated, `not_included`,
 languages and the credit cost), and approve only after the user says yes
-(`approve_translation`). Then follow progress and fetch the result. The
+(`approve_translation`, with the `plan_revision` of the plan shown as the
+required `expected_plan_revision`; from CLI 0.4.0 `aiglot batches approve` also
+needs `--yes` without a terminal). Then follow progress and fetch the result. The
 installed AI Glot skills (`aiglot-translate-file`, `aiglot-localize-repo`,
 `aiglot-run-translations`, `aiglot-manage-glossary`) describe these steps in
 detail. A first translation the workspace cannot afford is offered a free
@@ -348,7 +350,9 @@ authenticate an account. Downloads: https://github.com/DuvInc/ai-glot-skills/rel
 
 Creating a translation, planning it and the guest upload cost nothing. Credits
 are spent only when a translation is approved. Approve only after the user has
-seen the plan and the cost and said yes. Never buy credits or a plan for the
+seen the plan and the cost and said yes, and tie the approval to that plan with
+its `plan_revision` (`expected_plan_revision`; a `plan_changed` refusal means
+the plan moved, so show the new one). Never buy credits or a plan for the
 user, and never enter payment details yourself.
 
 When credits are short, approval answers `insufficient_credits` (HTTP 402) with

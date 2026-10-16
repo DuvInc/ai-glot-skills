@@ -37,7 +37,10 @@ known input limits and appropriate output checks.
    permitted HTTPS file_url, or create_upload_url followed by raw external PUT
    and create_translation with upload_id on the same connection. Send exactly
    one source; omit filename when using upload_id. Do not inline binary/base64.
-4. Pass the file-scope instruction to create_translation, or use plan_translation
+4. When a create may be retried (timeouts, unattended runs), send an idempotency
+   key: CLI `--idempotency-key KEY` (from 0.4.0), MCP `idempotency_key`. A repeat
+   returns the first batch; the same key with other content is `idempotency_key_reused`.
+   Pass the file-scope instruction to create_translation, or use plan_translation
    after creating without an instruction. Include every target and the content
    scope here. Use refinement to change an existing plan, not a fresh duplicate
    batch. Planning costs no credits.
@@ -49,7 +52,14 @@ known input limits and appropriate output checks.
    when entitlements allow it. Do not substitute an estimated price for the
    returned plan's measured cost.
 6. Call approve_translation only in awaiting_approval and when the user has
-   authorized this plan, its exclusions, chosen quality and cost. Reuse a
+   authorized this plan, its exclusions, chosen quality and cost. Pass the
+   `plan_revision` of the plan the user saw as `expected_plan_revision`: it is
+   required, and it comes with create_translation (with an instruction),
+   plan_translation and get_batch. On `plan_changed`, read the batch, show the
+   new plan and cost to the user, and do not retry the old revision. From CLI
+   0.4.0, `aiglot batches approve ID` asks to confirm and needs `--yes` without
+   a terminal (exit 2, nothing spent, otherwise); use `--yes` only for an
+   authorized plan, and never on 0.3.x, which does not know it. Reuse a
    standing authorization covering these facts. Otherwise ask for the actual
    decision, not a vague permission to continue. String-level custom_instructions
    describe tone and content-visible protections; file scope belongs in the plan.
