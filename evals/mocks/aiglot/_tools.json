@@ -383,6 +383,12 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 2000
+          },
+          "idempotency_key": {
+            "description": "Optional. Reuse the same key to retry this create safely: a repeat returns the first batch, and the same key with a different file, name or instruction is refused with `idempotency_key_reused`.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
           }
         }
       },
@@ -430,7 +436,7 @@
     {
       "name": "approve_translation",
       "title": "Approve the plan and start translating (spends credits)",
-      "description": "Requires the batch to be `awaiting_approval`. If it is `awaiting_instructions` this is refused with `no_plan_yet`, and the fix is to call plan_translation first. Only call when the user has authorized the current plan, its exclusions and its measured cost; reuse explicit standing authorization when it covers this plan and budget. Starts the translation the current plan describes and reserves its credits (standard: 1 word = 1 credit; lite: a third, rounded up, cheaper and faster, slightly simpler output). Returns `credits_charged` plus initial progress with `estimated_seconds_remaining`. From here, poll get_batch; when its `next_action` is 'download', fetch the result with get_batch_result_link.",
+      "description": "Requires the batch to be `awaiting_approval`. If it is `awaiting_instructions` this is refused with `no_plan_yet`, and the fix is to call plan_translation first. Only call when the user has authorized the current plan, its exclusions and its measured cost; reuse explicit standing authorization when it covers this plan and budget. Pass the `plan_revision` of the plan they reviewed as `expected_plan_revision`: it is required, and the call is refused if the plan changed since. Starts the translation the current plan describes and reserves its credits (standard: 1 word = 1 credit; lite: a third, rounded up, cheaper and faster, slightly simpler output). Returns `credits_charged` plus initial progress with `estimated_seconds_remaining`. From here, poll get_batch; when its `next_action` is 'download', fetch the result with get_batch_result_link.",
       "inputSchema": {
         "type": "object",
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -451,10 +457,16 @@
             "description": "Standing guidelines (tone, protected terms) applied on top of the plan.",
             "type": "string",
             "maxLength": 2000
+          },
+          "expected_plan_revision": {
+            "description": "Required. The `plan_revision` of the plan the user reviewed: returned by create_translation and plan_translation with the plan, and by get_batch. Approval is refused with `plan_changed` if the plan was rebuilt since, so you can never spend credits on a plan nobody reviewed.",
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
           }
         },
         "required": [
-          "batch_id"
+          "batch_id",
+          "expected_plan_revision"
         ]
       },
       "annotations": {

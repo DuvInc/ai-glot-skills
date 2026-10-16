@@ -52,6 +52,15 @@ user's own browser or device-code flow; never collect a key in chat.
 Already configured API keys are a supported CLI/CI mechanism, but do not read,
 print, bundle or transmit their value.
 
+The CLI covers the whole flow: `batches create`, `plan`, `approve`, `get`,
+`download` and `cancel`. Only `approve` spends credits; it pins the plan
+revision it just read. From CLI 0.4.0, `batches approve ID` asks for
+confirmation and needs `--yes` when there is no terminal (exit code 2, nothing
+spent, otherwise). Use `--yes` only after the user authorized the plan and its
+cost. CLI 0.3.x does not prompt and rejects `--yes`: check `aiglot --version`.
+From CLI 0.4.0, `batches create` also accepts `--idempotency-key KEY` so a retry
+returns the first batch.
+
 Use --json for machine-readable output. Create/get outputs are the batch at
 the top level, not under data. Preserve stderr on failure and report the real
 error. Do not hide an error behind a JSON parsing fallback.

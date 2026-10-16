@@ -24,9 +24,9 @@ changing clients is not a permission bypass.
 | Balance, credit grants and expiry | `credits --json` | `get_credit_balance` | `GET /credits` |
 | Usage over a period | `usage --from DATE --to DATE --granularity day --json` | `get_usage` | `GET /usage?from=DATE&to=DATE&granularity=day` |
 | Supported language tags | `languages --json` | Host-exposed language resource if available | `GET /languages`, public |
-| Create with scope | `batches create FILE --instruction TEXT --json` | `create_translation` | `POST /batches` |
+| Create with scope | `batches create FILE --instruction TEXT --json` (from 0.4.0, `--idempotency-key KEY` to retry safely) | `create_translation` (`idempotency_key`) | `POST /batches` (`Idempotency-Key` header) |
 | Plan/refine | `batches plan ID --instruction TEXT` or `--refine TEXT` | `plan_translation` | `POST /batches/ID/plan` |
-| Approve | `batches approve ID --quality standard` | `approve_translation` | `POST /batches/ID/approve` |
+| Approve | `batches approve ID --quality standard` (from 0.4.0: confirms first, `--yes` without a terminal) | `approve_translation` (`expected_plan_revision` required) | `POST /batches/ID/approve` (`expected_plan_revision` recommended) |
 | Read state/plan | `batches get ID --json` | `get_batch` | `GET /batches/ID` |
 | Find past work | `batches list --all --json` | `list_batches` | `GET /batches`, cursor pagination |
 | Retrieve output | `batches download ID --output PATH` | `get_batch_result_link` | `GET /batches/ID/result?format=link`, `content` or `file` |
@@ -41,6 +41,28 @@ public language catalog and glossary pairs use BCP 47 tags such as en-US/fr.
 Compare the requested language semantically and use catalog-confirmed tags
 where the operation needs tags. Do not reject a correct plan just because
 French is not literally equal to fr, or guess a regional variant.
+
+Approval spends credits, so bind it to the plan the user reviewed:
+
+- MCP: `expected_plan_revision` is required. Pass the `plan_revision` returned
+  by `create_translation` (when it was called with an instruction),
+  `plan_translation` and `get_batch`. If the plan changed since, the call is
+  refused with `plan_changed`: read the batch again and show the new plan, scope
+  and cost to the user before approving. Never reuse an old revision.
+- REST: `expected_plan_revision` is optional but recommended, with the same
+  `plan_changed` refusal.
+- CLI: `batches approve` reads the current plan and pins its revision itself.
+  From CLI 0.4.0 it also asks for confirmation, and without a terminal it needs
+  `--yes`: without it the command exits 2 and spends nothing. Review the plan
+  with `batches get ID` first, then add `--yes` only for an authorized plan. CLI
+  0.3.x does not prompt and does not know `--yes`, so do not pass it there.
+
+To retry a create after a lost response, send the same `Idempotency-Key` (CLI
+`--idempotency-key KEY` from CLI 0.4.0, MCP `idempotency_key`; any 1 to 255 printable
+characters, a UUID works well). A repeat returns the first batch without
+planning again or costing credits. The same key with a different file, name or
+instruction is refused with HTTP 409 `idempotency_key_reused`: use a new key for
+new work.
 
 CLI examples omit the `aiglot` prefix in the table. Inspect installed help and
 the current OpenAPI/tool schema for request fields. Do not invent bulk endpoints,
