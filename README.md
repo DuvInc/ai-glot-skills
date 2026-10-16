@@ -1,5 +1,7 @@
 # AI Glot skills
 
+![ai-glot-skills: a dithered banner with the project name and its one-line summary](docs/hero.png)
+
 Translate structured files with your own AI Glot workspace from a compatible
 assistant or coding agent. These skills teach the workflow around AI Glot's
 existing API, MCP server and CLI. Translation runs in AI Glot; installing a
