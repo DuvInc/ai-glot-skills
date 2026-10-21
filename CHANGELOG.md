@@ -38,3 +38,11 @@
 - Portable OpenAI package, Claude package and individual skill archives.
 - Explicit plan/cost authorization, binary-upload fallback and interrupted-job recovery.
 - Structure and placeholder validation for JSON locale results.
+
+## 0.3.0 candidate
+
+- Prepare OpenAI listing metadata, onboarding, support link and eight review cases.
+- Add synthetic JSON/CSV/DOCX fixtures and measured live test evidence.
+- Generate a Claude directory folder without developer dependency installation.
+- Validate public-upload limits, icons and review-case counts.
+- Record the recording, reviewer-account, screenshot and portal gates honestly.

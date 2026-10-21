@@ -39,3 +39,33 @@ Package checks passed: 22 Node tests, schema/reference validation, seven
 reproducible archives and native Claude strict validation. Two behavioral fixtures cover the default full-access recommendation and an explicit
 read-only request; these new model evaluations have not been run. No new
 end-to-end OAuth flow or paid translation is claimed for this patch.
+
+## 0.3.0 directory preparation (2026-10-10)
+
+The current public-upload constraints were checked against official OpenAI and
+Claude documentation. The old 43-character subtitle and five default prompts
+were not submission-compliant. The candidate now has a 26-character subtitle,
+three welcome prompts, the support URL, five positive and three negative
+review cases, onboarding and all-country publication metadata. Product name
+AI Glot is separate from the intended verified publisher Guillaume Duvernay.
+
+Four live synthetic jobs completed through the CLI/authenticated MCP bridge:
+French JSON (2 Lite credits), German JSON (2), German DOCX (3) and French CSV (2),
+9 credits total against an explicit combined ceiling of 20. Plan revisions,
+18 tool annotations, MCP Apps resource, raw PUT upload, downloaded keys,
+placeholders, bold DOCX heading, SKUs and prices were verified. A stale revision
+was rejected before spending. See packaging/review/live-evidence.json.
+
+The installed CLI 0.3.0 could not upload DOCX directly; the test used the released
+MCP upload_id + raw PUT route. No customer documents or glossary mappings were
+read or changed. The live tests do not certify model tool selection, native host
+rendering, or the saved portal version. Those review cases are explicitly not run.
+
+The Claude submission folder plugins/ai-glot is generated from the same source
+and excludes development package/lock files and binary fixtures. Native strict
+Claude validation passes. The source repository and root marketplace remain
+compatible; the marketplace now installs this clean generated folder.
+
+The public-upload package still lacks a verified real recording URL. Reviewer
+access, real host screenshots/tool tests, publisher/domain verification and legal
+attestations remain portal gates. No submission or listing approval is claimed.

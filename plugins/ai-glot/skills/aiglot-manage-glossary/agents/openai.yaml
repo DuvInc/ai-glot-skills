@@ -1,0 +1,11 @@
+interface:
+  display_name: "Manage AI Glot terminology"
+  short_description: "Update glossary terms while preserving other mappings."
+  default_prompt: "Use $aiglot-manage-glossary for this AI Glot workflow."
+dependencies:
+  tools:
+    - type: mcp
+      value: aiglot
+      description: "AI Glot workspace translation and terminology tools"
+      transport: streamable_http
+      url: "https://mcp.ai-glot.com/mcp"

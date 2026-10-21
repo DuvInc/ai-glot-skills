@@ -1,0 +1,11 @@
+interface:
+  display_name: "Manage your AI Glot workspace"
+  short_description: "Connect your workspace and inspect credits and usage."
+  default_prompt: "Use $aiglot-manage-workspace for this AI Glot workflow."
+dependencies:
+  tools:
+    - type: mcp
+      value: aiglot
+      description: "AI Glot workspace translation and terminology tools"
+      transport: streamable_http
+      url: "https://mcp.ai-glot.com/mcp"

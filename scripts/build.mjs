@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync } from "node:fs";
 import { resolve } from "node:path";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
@@ -8,7 +8,12 @@ const config=JSON.parse(readFileSync(resolve(ROOT,"packaging/config.json"),"utf8
 const dist=resolve(ROOT,"dist");
 rmSync(dist,{recursive:true,force:true});mkdirSync(dist,{recursive:true});
 const skillFiles=config.skills.flatMap(name=>walk(resolve(ROOT,"skills",name)).map(file=>"skills/"+name+"/"+file));
-const common=["README.md","LICENSE","COMPATIBILITY.md","VALIDATION.md","CHANGELOG.md","CONTRIBUTING.md","SECURITY.md","packaging/SUBMISSION.md","agent-setup/prompt.md","assets/icon.png","assets/logo.png",...skillFiles];
+const common=["README.md","LICENSE","COMPATIBILITY.md","VALIDATION.md","CHANGELOG.md","CONTRIBUTING.md","SECURITY.md","packaging/SUBMISSION.md","packaging/claude-connector.json","packaging/review/CASE-RESULTS.md","packaging/review/DEMO.md","packaging/review/REVIEWER-ACCESS.md","packaging/review/live-evidence.json","agent-setup/prompt.md","assets/icon.png","assets/logo.png",...skillFiles];
+const claudeRoot=resolve(ROOT,"plugins/ai-glot");
+rmSync(claudeRoot,{recursive:true,force:true});mkdirSync(claudeRoot,{recursive:true});
+for(const file of [".claude-plugin/plugin.json",".mcp.json",...common]) {
+ const target=resolve(claudeRoot,file);mkdirSync(resolve(target,".."),{recursive:true});cpSync(resolve(ROOT,file),target);
+}
 const packages=[
  ["ai-glot-openai-"+version+".zip",["plugin.json","mcp.json",...common],"",null],
  ["ai-glot-claude-"+version+".zip",[".claude-plugin/plugin.json",".mcp.json",...common],"",null],

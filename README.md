@@ -142,3 +142,16 @@ See [VALIDATION.md](VALIDATION.md), [CONTRIBUTING.md](CONTRIBUTING.md), [evaluat
 
 The MIT license covers these instructions and helper code. Use of the hosted
 AI Glot service follows its terms, account permissions and credit entitlements.
+
+## Directory preparation candidate
+
+Version 0.3.0 is a preparation candidate, not an approved directory listing.
+OpenAI review metadata is generated from packaging/listing.json. Claude
+directory submissions use the generated plugins/ai-glot folder, which has no
+development dependency installation. npm run check rebuilds both host packages
+and this folder from the same five source skills.
+
+See [submission requirements](packaging/SUBMISSION.md) and
+[measured service tests](packaging/review/CASE-RESULTS.md). The checks do not
+replace actual ChatGPT/Claude or portal tests. A recording script is not a
+recording; reviewer credentials and legal attestations stay in secure portals.
