@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Agent setup: the guest route tells the person to tick "Let my agent continue" on the claim page. Since 2026-11-17 the box is off by default, so the claim link alone never connects an agent.
+
 - MCP `approve_translation` requires `expected_plan_revision` (the `plan_revision` returned with the plan); `plan_changed` means re-read and show the plan again. REST keeps it optional and recommended.
 - Document `Idempotency-Key` for batch creation (CLI `--idempotency-key` and MCP `idempotency_key`): a retry returns the first batch, a different request with the same key is `idempotency_key_reused`.
 - Describe CLI 0.4.0 approval (confirmation, `--yes` without a terminal, exit 2 and no spend otherwise) next to 0.3.x behaviour.
