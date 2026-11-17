@@ -98,7 +98,9 @@ npx -y @ai-glot/cli@0.3.6 guest start products.csv \
 It prints the plan (languages, word counts, `not_included`) and `claim_url`,
 then returns. Summarize the plan for the user in a few lines, say plainly if
 something they asked for is in `not_included`, and give them `claim_url`
-(valid for 2 hours). Then wait for the claim:
+(valid for 2 hours). Tell them to tick "Let my agent continue" on that page:
+it is off by default, and without it this machine is not connected. Then wait
+for the claim:
 
 ```sh
 npx -y @ai-glot/cli@0.3.6 guest connect
@@ -127,7 +129,8 @@ curl -sS https://api.ai-glot.com/v1/guest/batches \
 
 Read only `data.batch.plan` and `data.claim` from that file (for example with
 `jq '.data | {plan: .batch.plan, claim}'`), never `data.agent_connection`. Give
-the user `data.claim.url`. After they claim, exchange the device code without
+the user `data.claim.url` and tell them to tick "Let my agent continue" there
+(off by default). After they claim, exchange the device code without
 printing anything:
 
 ```sh
